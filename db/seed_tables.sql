@@ -10,10 +10,10 @@ VALUES ('Bond', 'James', 'james.bond@gmail.com', '3b5fe14857124335bb8832cc602f8e
 
 -- Seed schedules table
 INSERT INTO schedules(ID_user, day, start_time, end_time)
-VALUES ('1', '1', '14:00', '16"00');
+VALUES (1, 1,'2021-03-09 14:00:00', '2021-03-09 16:00:00');
 
 INSERT INTO schedules(ID_user, day, start_time, end_time)
-VALUES ('1', '2', '14:00', '16"00');
+VALUES (1, 2, '2021-03-09 14:00:00', '2021-03-09 16:00:00');
 
 INSERT INTO schedules(ID_user, day, start_time, end_time)
-VALUES ('3', '4', '08:00', '18:00');
+VALUES (3, 4, '2021-03-09 08:00:00', '2021-03-09 18:00:00');

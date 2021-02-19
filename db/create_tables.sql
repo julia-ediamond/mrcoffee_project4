@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS schedules (
   ID serial PRIMARY KEY UNIQUE,
-  ID_user FOREIGN KEY REFERENCES users(ID) ON DELETE CASCADE,
+  ID_user SMALLINT REFERENCES users(ID) ON DELETE CASCADE,
   day SMALLINT NOT NULL CHECK (day >= 1 AND day <= 7),
-  start_time TIMESTAMP NOT NULL,
-  end_time TIMESTAMP NOT NULL CHECK (end_time > start_time)
+  start_time TIMESTAMPTZ NOT NULL,
+  end_time TIMESTAMPTZ NOT NULL CHECK (end_time > start_time)
 );
