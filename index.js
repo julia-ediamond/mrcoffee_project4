@@ -5,7 +5,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // postgres setup
-// const db = require('./database')
+const db = require('./database')
 
 // static files
 app.use(express.static('public'))

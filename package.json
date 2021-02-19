@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "create_database": "someSQLhere",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
