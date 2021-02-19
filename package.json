@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "create_database": "someSQLhere",
+    "create-database": "createdb mrcoffeeapp",
+    "create-tables": "psql caterinaturnbull -h localhost -d mrcoffee -f sql/create_tables.sql",
+    "seed-tables": "psql caterinaturnbull -h localhost -d mrcoffee -f sql/seed_tables.sql",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
