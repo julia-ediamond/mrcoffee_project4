@@ -1,6 +1,7 @@
 // express setup
 const express = require('express')
 const app = express()
+const bcrypt = require('bcrypt')
 
 const crypto = require('crypto');
 const path = require('path');
@@ -21,6 +22,8 @@ app.use(bodyParser.json())
 // port
 const port = 3002
 
+const users = [] //to test it locally while I don't have a database
+
 // ejs template engine
 app.set('views', './views')
 app.set('view engine', 'ejs')
@@ -34,6 +37,7 @@ app.get('/login', (req, res) => {
 });
 
 //post route for login form
+//change it with passport.js
 app.post('/home', (req, res) => {
     const psw = req.body.password;
     const encryptedPassword = crypto.createHash('sha256').update(psw).digest('hex');
@@ -41,19 +45,51 @@ app.post('/home', (req, res) => {
         email: req.body.email,
         password: encryptedPassword
     };
-    res.redirect('pages/index')
+    res.redirect('/index')
 });
-
 
 //get route for signup form
 app.get('/signup', (req, res) => {
     res.render('pages/signup')
 });
 
+//get homepage
+app.get('/', (req, res) => {
+    res.render('pages/index')
+});
+
+// post new user using crypto
+// app.post('/signup', (req, res) => {
+//     const psw = req.body.password;
+//     const encryptedPassword = crypto.createHash('sha256').update(psw).digest('hex');
+//     const newUser = {
+//         firstname: req.body.firstname,
+//         lastname: req.body.lastname,
+//         email: req.body.email,
+//         password: encryptedPassword
+//     };
+//     database.users.push(newUser);
+//     res.redirect('/index');
+// })
 
 
-
-
+//post new user using bcrypt. it prints empty object yet
+app.post('/signup', async (req, res) => {
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10)
+        users.push({
+            id: Date.now().toString(),
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            password: hashedPassword
+        })
+        res.redirect('/index')
+    } catch {
+        res.redirect('/signup')
+    }
+    console.log(users)
+})
 
 app.listen(3002, () => {
     console.log("listening on port http:\\localhost:3002!")

@@ -1,8 +1,7 @@
 .content-block {
     width: 50%;
     background-color: ghostwhite;
-    margin: 8em;
-    
+    margin: 8em;      
 }
 
 .login-button {
@@ -15,4 +14,8 @@ body {
 
 h1 {
    color: #294ead;
+}
+
+.nav-bar {
+    display: flex;
 }
