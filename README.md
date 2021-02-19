@@ -3,7 +3,7 @@
 A pretend scheduling app for fictitous Paris cafe Mr. Coffee. This 2-person project was created for learning purposes through the INCO Academy bootcamp, INCODE.
 
 ## Installation
-
+This is the first change in the project
 
 ```zsh
 npm init
