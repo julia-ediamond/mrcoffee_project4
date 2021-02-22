@@ -56,40 +56,6 @@ app.get('/signup', (req, res) => {
     res.render('pages/signup')
 });
 
-//get homepage
-app.get('/', (req, res) => {
-    db.any('SELECT * from schedules;')
-        .then((schedules) => {
-            console.log(schedules)
-            res.render('pages/index', {
-                layout: './layouts/profile-layout',
-                schedules: schedules
-            })
-        })
-        .catch((err) => {
-            console.log(err)
-            // TODO: create error page
-            // res.render('pages/error', {
-            // err: err
-            // })
-        })
-});
-
-// post new user using crypto
-// app.post('/signup', (req, res) => {
-//     const psw = req.body.password;
-//     const encryptedPassword = crypto.createHash('sha256').update(psw).digest('hex');
-//     const newUser = {
-//         firstname: req.body.firstname,
-//         lastname: req.body.lastname,
-//         email: req.body.email,
-//         password: encryptedPassword
-//     };
-//     database.users.push(newUser);
-//     res.redirect('/index');
-// })
-
-
 //post new user using bcrypt. it prints empty object yet
 app.post('/signup', async (req, res) => {
     try {
@@ -107,5 +73,59 @@ app.post('/signup', async (req, res) => {
     }
     console.log(users)
 })
+
+
+//get homepage
+app.get('/', (req, res) => {
+    db.any('SELECT * FROM schedules;')
+    .then((schedules) => {
+        res.render('pages/index', {
+            layout: './layouts/profile-layout',
+            schedules: schedules
+        })
+    })
+    .catch((err) => {
+        console.log(err)
+        // TODO: create error page
+        // res.render('pages/error', {
+        // err: err
+        // })
+    })
+})
+
+//get schedule management page
+// TODO: test after authentication
+app.get('/schedule', (req, res) => {
+    db.any(`SELECT day, start_time, end_time FROM schedules WHERE ${currentUser.id} = id_user;`)
+    .then((schedules) => {
+        res.render('pages/schedule', {
+            layout: './layouts/profile-layout',
+            firstname: currentUser.firstname,
+            schedules: schedules
+        })
+    })
+    .catch((err) => {
+        console.log(err)
+        // TODO: create error page
+        // res.render('pages/error', {
+        // err: err
+        // })
+    })
+})
+
+
+// post new user using crypto
+// app.post('/signup', (req, res) => {
+//     const psw = req.body.password;
+//     const encryptedPassword = crypto.createHash('sha256').update(psw).digest('hex');
+//     const newUser = {
+//         firstname: req.body.firstname,
+//         lastname: req.body.lastname,
+//         email: req.body.email,
+//         password: encryptedPassword
+//     };
+//     database.users.push(newUser);
+//     res.redirect('/index');
+// })
 
 
