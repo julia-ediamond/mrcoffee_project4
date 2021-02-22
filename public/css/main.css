@@ -1,0 +1,26 @@
+.content-block {
+    width: 50%;
+    background-color: ghostwhite;
+    margin: 8em;      
+}
+
+.login-button {
+    color: #c34c89;
+}
+
+body {
+    background-color: #964e9b;
+}
+
+h1 {
+   color: #294ead;
+}
+
+.nav-bar {
+    display: flex;
+    justify-content: center;
+}
+
+.nav-li {
+    padding: 1.5em;
+}
