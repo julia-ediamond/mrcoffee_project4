@@ -1,1 +1,12 @@
-<h1>Hello, this is homepage</h1>
+<h1>Hello, this is the homepage</h1>
+
+<table>
+<% for (i = 0; i < schedules.length; i++) { %>
+    <tr>
+        <td><%= schedules[i].id_user %></td>
+        <td><%= schedules[i].day %></td>
+        <td><%= schedules[i].start_time %></td>
+        <td><%= schedules[i].end_time %></td>
+    </tr>
+<% } %>
+</table>
