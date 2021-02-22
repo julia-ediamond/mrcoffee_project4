@@ -94,6 +94,7 @@ app.get('/', (req, res) => {
 })
 
 //get schedule management page
+// TODO: test after authentication
 app.get('/schedule', (req, res) => {
     db.any(`SELECT day, start_time, end_time FROM schedules WHERE ${currentUser.id} = id_user;`)
     .then((schedules) => {
@@ -102,6 +103,13 @@ app.get('/schedule', (req, res) => {
             firstname: currentUser.firstname,
             schedules: schedules
         })
+    })
+    .catch((err) => {
+        console.log(err)
+        // TODO: create error page
+        // res.render('pages/error', {
+        // err: err
+        // })
     })
 })
 
