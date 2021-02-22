@@ -21,6 +21,9 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json())
 // port
 const port = 3002
+app.listen(3002, () => {
+    console.log("listening on port http:\\localhost:3002!")
+})
 
 const users = [] //to test it locally while I don't have a database
 
@@ -28,7 +31,7 @@ const users = [] //to test it locally while I don't have a database
 app.set('views', './views')
 app.set('view engine', 'ejs')
 app.use(expressLayouts)
-//app.set('layout')
+app.set('layout', './layouts/login-layout')
 
 
 //get route for login form
@@ -37,8 +40,7 @@ app.get('/login', (req, res) => {
 });
 
 //post route for login form
-//change it with passport.js
-app.post('/home', (req, res) => {
+app.post('/login', (req, res) => {
     const psw = req.body.password;
     const encryptedPassword = crypto.createHash('sha256').update(psw).digest('hex');
     const user = {
@@ -55,7 +57,7 @@ app.get('/signup', (req, res) => {
 
 //get homepage
 app.get('/', (req, res) => {
-    res.render('pages/index')
+    res.render('pages/index', { layout: './layouts/profile-layout' })
 });
 
 // post new user using crypto
@@ -91,6 +93,3 @@ app.post('/signup', async (req, res) => {
     console.log(users)
 })
 
-app.listen(3002, () => {
-    console.log("listening on port http:\\localhost:3002!")
-})
