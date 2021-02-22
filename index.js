@@ -13,7 +13,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 5
 // postgres setup
-// const db = require('./database')
+const db = require('./database')
 
 // static files
 app.use(express.static('public'))
@@ -30,6 +30,7 @@ const users = [] //to test it locally while I don't have a database
 // ejs template engine
 app.set('views', './views')
 app.set('view engine', 'ejs')
+
 app.use(expressLayouts)
 app.set('layout', './layouts/login-layout')
 
@@ -92,4 +93,5 @@ app.post('/signup', async (req, res) => {
     }
     console.log(users)
 })
+
 

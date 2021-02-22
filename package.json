@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "create-database": "createdb mrcoffeeapp",
+    "create-tables": "psql -h localhost -d mrcoffeeapp -f db/create_tables.sql",
+    "seed-tables": "psql -h localhost -d mrcoffeeapp -f db/seed_tables.sql",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -11,6 +14,7 @@
   "dependencies": {
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.0",
