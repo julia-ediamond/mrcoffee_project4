@@ -21,8 +21,8 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json())
 // port
 const port = 3002
-app.listen(3002, () => {
-    console.log("listening on port http:\\localhost:3002!")
+app.listen(port, () => {
+    console.log(`listening on port http://localhost:${port}!`)
 })
 
 const users = [] //to test it locally while I don't have a database
@@ -58,7 +58,21 @@ app.get('/signup', (req, res) => {
 
 //get homepage
 app.get('/', (req, res) => {
-    res.render('pages/index', { layout: './layouts/profile-layout' })
+    db.any('SELECT * from schedules;')
+    .then((schedules) => {
+        console.log(schedules)
+        res.render('pages/index', {
+        layout: './layouts/profile-layout',
+        schedules: schedules
+        })
+    })
+    .catch((err) => {
+        console.log(err)
+        // TODO: create error page
+        // res.render('pages/error', {
+        // err: err
+        // })
+    })
 });
 
 // post new user using crypto
