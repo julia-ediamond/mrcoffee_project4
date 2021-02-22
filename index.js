@@ -59,20 +59,20 @@ app.get('/signup', (req, res) => {
 //get homepage
 app.get('/', (req, res) => {
     db.any('SELECT * from schedules;')
-    .then((schedules) => {
-        console.log(schedules)
-        res.render('pages/index', {
-        layout: './layouts/profile-layout',
-        schedules: schedules
+        .then((schedules) => {
+            console.log(schedules)
+            res.render('pages/index', {
+                layout: './layouts/profile-layout',
+                schedules: schedules
+            })
         })
-    })
-    .catch((err) => {
-        console.log(err)
-        // TODO: create error page
-        // res.render('pages/error', {
-        // err: err
-        // })
-    })
+        .catch((err) => {
+            console.log(err)
+            // TODO: create error page
+            // res.render('pages/error', {
+            // err: err
+            // })
+        })
 });
 
 // post new user using crypto
