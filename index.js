@@ -115,6 +115,55 @@ app.get('/schedule', (req, res) => {
 })
 
 
+// post schedule
+
+
+// get any profile
+app.get('/profile/:id', (req, res) => {
+    db.any(`SELECT users.id, firstname, surname, email, day, start_time, end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE ${req.params.id} = users.id`)
+    .then((combinedData) => {
+        console.log(combinedData)
+        res.render('pages/profile', {
+            layout: './layouts/profile-layout',
+            firstname: combinedData[0].firstname,
+            lastname: combinedData[0].surname,
+            email: combinedData[0].email,
+            schedules: combinedData
+        })
+    })
+    .catch((err) => {
+        console.log(err)
+        // TODO: create error page
+        // res.render('pages/error', {
+        // err: err
+        // })
+    })
+})
+
+// get current user profile
+app.get('/profile', (req, res) => {
+    // db.any(`SELECT users.id, firstname, surname, email, day, start_time, end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE ${currentUser.id} = users.id`) - UNCOMMENT AFTER AUTHENTICATION
+    db.any(`SELECT users.id, firstname, surname, email, day, start_time, end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE 1 = users.id`) // for testing
+    .then((combinedData) => {
+        console.log(combinedData)
+        res.render('pages/profile', {
+            layout: './layouts/profile-layout',
+            firstname: combinedData[0].firstname,
+            lastname: combinedData[0].surname,
+            email: combinedData[0].email,
+            schedules: combinedData
+        })
+    })
+    .catch((err) => {
+        console.log(err)
+        // TODO: create error page
+        // res.render('pages/error', {
+        // err: err
+        // })
+    })
+})
+
+
 // post new user using crypto
 // app.post('/signup', (req, res) => {
 //     const psw = req.body.password;
