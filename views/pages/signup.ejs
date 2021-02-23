@@ -33,8 +33,17 @@
 
                 <li class="form-li">
                     <label class="form-label" for="password">Password</label>
-                    <p class="description">Passwords must be at least at least 6 characters long and contain 1 uppercase letter, 1 lowercase letter, and 1 number.</p>
+                    <p class="description">Passwords must be at least at least 6 characters long and contain 1 uppercase
+                        letter, 1 lowercase letter, and 1 number.</p>
                     <input class="form-input" type="password" id="password" name="password">
+                    <p class="alert hidden">Not valid.</p>
+
+                </li>
+
+                <li class="form-li">
+                    <label class="form-label" for="password-confirmation">Confirm password</label>
+                    <p class="description">Please type it again</p>
+                    <input class="form-input" type="password" id="confirm-password" name="confirm-password">
                     <p class="alert hidden">Not valid.</p>
                 </li>
                 <button type="submit" class="button">Submit</button>
