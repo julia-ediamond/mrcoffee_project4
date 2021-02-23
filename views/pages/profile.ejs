@@ -1,1 +1,32 @@
-<h1>Hello, here is your profile</h1>
+<h1>Profile details for <%= firstname %> <%= lastname %></h1>
+<div class="2-column">
+    <div>
+        <h2>User information</h2>
+        <ul>
+            <li><strong>First Name: </strong><%= firstname %></li>
+            <li><strong>Last Name: </strong><%= lastname %></li>
+            <li><strong>Email Address: </strong><%= email %></li>
+        </ul>
+    </div>
+    <div>
+        <h2>Schedules</h2>
+        <% if (schedules[0].day == null) { %>
+            <p><%= firstname %> currently has no schedules registered.</p>
+        <% } else { %>
+            <table>
+                <tr>
+                    <td>Day</td>
+                    <td>Start Time</td>
+                    <td>End Time</td>
+                </tr>
+                <% for (i = 0; i < schedules.length; i++) { %>
+                    <tr>
+                        <td><%= schedules[i].day %></td>
+                        <td><%= schedules[i].start_time %></td>
+                        <td><%= schedules[i].end_time %></td>
+                    </tr>
+                <% } %>
+            </table>
+        <% } %>
+    </div>
+</div>
