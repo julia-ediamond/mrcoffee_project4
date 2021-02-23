@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   //DOM elements
-  const signupForm = document.querySelector('.form')
-  const formSubmit = document.querySelector('.signup-button')
+  const signupForm = document.querySelector('form')
+  const formSubmit = document.querySelector('form button')
   const firstName = document.querySelector('#firstname')
   const lastName = document.querySelector('#lastname')
   const email = document.querySelector('#email')
