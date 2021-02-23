@@ -85,7 +85,10 @@ app.get('/', (req, res) => {
             })
         })
         .catch((err) => {
-            console.log(err)
+            //console.log(err)
+            res.render('pages/error', {
+                err: err
+            })
             // TODO: create error page
             // res.render('pages/error', {
             // err: err
@@ -106,14 +109,26 @@ app.get('/schedule', (req, res) => {
             })
         })
         .catch((err) => {
-            console.log(err)
+            //console.log(err)
+            res.render('pages/error', {
+                err: err
+            })
             // TODO: create error page
             // res.render('pages/error', {
             // err: err
             // })
         })
 })
+app.get('/error', (req, res) => {
+    const err = "Please try again";
+    res.render('pages/error', {
+        err: err
+    })
+})
 
+app.get('*', (req, res) => {
+    res.status(404).send('This page does not exist');
+});
 
 // post new user using crypto
 // app.post('/signup', (req, res) => {
