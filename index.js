@@ -107,6 +107,7 @@ app.get('/schedule', (req, res) => {
                 err: err
             })
         })
+    })
 })
 
 
@@ -154,7 +155,7 @@ app.get('/profile', (req, res) => {
   
 app.get('*', (req, res) => {
     res.status(404).send('This page does not exist');
-});  
+})
   
 // for testing
 // app.get('/error', (req, res) => {
@@ -177,5 +178,3 @@ app.get('*', (req, res) => {
 //     database.users.push(newUser);
 //     res.redirect('/index');
 // })
-
-
