@@ -102,10 +102,10 @@ app.get('/schedule', (req, res) => {
             firstname: 'Iulia', // placeholder, replace with currentUser.firstname AFTER AUTHENTICATION
             schedules: schedules
         })
-        .catch((err) => {
-            res.render('pages/error', {
-                err: err
-            })
+    })
+    .catch((err) => {
+        res.render('pages/error', {
+            err: err
         })
     })
 })
