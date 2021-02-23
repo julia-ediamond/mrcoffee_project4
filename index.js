@@ -96,11 +96,12 @@ app.get('/', (req, res) => {
 //get schedule management page
 // TODO: test after authentication
 app.get('/schedule', (req, res) => {
-    db.any(`SELECT day, start_time, end_time FROM schedules WHERE ${currentUser.id} = id_user;`)
+    // db.any(`SELECT day, start_time, end_time FROM schedules WHERE ${currentUser.id} = id_user;`) - TO BE UNCOMMENTED AFTER AUTHENTICATION
+    db.any(`SELECT day, start_time, end_time FROM schedules WHERE id_user = 1;`) // For testing
     .then((schedules) => {
         res.render('pages/schedule', {
             layout: './layouts/profile-layout',
-            firstname: currentUser.firstname,
+            firstname: 'Iulia', // placeholder, replace with currentUser.firstname AFTER AUTHENTICATION
             schedules: schedules
         })
     })
