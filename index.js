@@ -78,39 +78,40 @@ app.post('/signup', async (req, res) => {
 //get homepage
 app.get('/', (req, res) => {
     db.any('SELECT * FROM schedules;')
-    .then((schedules) => {
-        res.render('pages/index', {
-            layout: './layouts/profile-layout',
-            schedules: schedules
+        .then((schedules) => {
+            res.render('pages/index', {
+                layout: './layouts/profile-layout',
+                schedules: schedules
+            })
         })
-    })
-    .catch((err) => {
-        console.log(err)
-        // TODO: create error page
-        // res.render('pages/error', {
-        // err: err
-        // })
-    })
+        .catch((err) => {
+            console.log(err)
+            // TODO: create error page
+            // res.render('pages/error', {
+            // err: err
+            // })
+        })
 })
 
 //get schedule management page
 // TODO: test after authentication
 app.get('/schedule', (req, res) => {
-    db.any(`SELECT day, start_time, end_time FROM schedules WHERE ${currentUser.id} = id_user;`)
-    .then((schedules) => {
-        res.render('pages/schedule', {
-            layout: './layouts/profile-layout',
-            firstname: currentUser.firstname,
-            schedules: schedules
+    //db.any(`SELECT day, start_time, end_time FROM schedules WHERE ${currentUser.id} = id_user;`)
+    db.any(`SELECT day, start_time, end_time FROM schedules WHERE id_user = 1;`)
+        .then((schedules) => {
+            res.render('pages/schedule', {
+                layout: './layouts/profile-layout',
+                //firstname: currentUser.firstname,
+                schedules: schedules
+            })
         })
-    })
-    .catch((err) => {
-        console.log(err)
-        // TODO: create error page
-        // res.render('pages/error', {
-        // err: err
-        // })
-    })
+        .catch((err) => {
+            console.log(err)
+            // TODO: create error page
+            // res.render('pages/error', {
+            // err: err
+            // })
+        })
 })
 
 

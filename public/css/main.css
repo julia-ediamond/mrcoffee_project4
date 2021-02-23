@@ -11,9 +11,6 @@
     line-height: 1.3em;
 }
 
-.login-button {
-    color: #c34c89;
-}
 
 body {
     background-color: ghostwhite;
@@ -24,15 +21,16 @@ body {
 
  h1 {
    color:#5b5b5b;
-   display: flex;
-   justify-content: center;
-   margin-left: 3em;
+   text-align: center;
 } 
 
 .nav-bar {
+    padding: 0em;
     display: flex;
     justify-content: center;
-    background-color: #964e9b;
+    background-color: #c24d89;
+    margin-block-start: 0em;
+    margin-block-end: 0em;   
 }
 
 .nav-li {
@@ -42,7 +40,6 @@ body {
     font-size: 1.3em;
     font-family: 'Archivo', sans-serif;
     font-weight: bold;
- 
 }
 
 .menu {
@@ -57,12 +54,18 @@ body {
     margin-left: auto;
     margin-right: auto;
 }
+
+.form-ul{
+    padding-inline-start: 0em;
+    margin: 0em;
+}
 .form-li {
     list-style-type: none;
-    width: 100%;
+    width: 90%;
+    margin: 0.5em;
 }
 
-.login-button {
+.button {
     width: 10em;
     height: 4em;
     background-color: #c24d89;
@@ -73,24 +76,13 @@ body {
     margin-right: auto;
     font-weight: bold;
 }
-.signup-button {
-    width: 10em;
-    height: 4em;
-    background-color: #c24d89;
-    color: ghostwhite;
-    font-size: 1.6;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-weight: bold;
-    margin-left: 20em;   
-    
-}
 
 .form-label {
     font-size: 1.2em;
+    margin-bottom: 2em;  
 }
 
 .form-input {
-    margin: 1.5em;
     height: 2em;
     width: 100%;
 }
@@ -102,3 +94,32 @@ body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
+.table-schedules {
+    border-collapse: collapse;
+    display: flex;
+    justify-content: space-around;
+    padding: 2em;
+    margin-left: 3em;
+    margin-right: 3em;
+}
+
+.table-heading {
+    text-align: center;
+}
+
+.table-cell {
+    margin: 3em;
+    padding-left: 1em;
+}
+
+.two-column {
+    display: flex;
+    justify-content: center;    
+}
+
+.shedule-p {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}

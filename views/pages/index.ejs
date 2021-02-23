@@ -1,12 +1,27 @@
-<h1>Hello, this is the homepage</h1>
+<h1>Hello, here are all your schedules:</h1>
 
-<table>
-<% for (i = 0; i < schedules.length; i++) { %>
-    <tr>
-        <td><%= schedules[i].id_user %></td>
-        <td><%= schedules[i].day %></td>
-        <td><%= schedules[i].start_time %></td>
-        <td><%= schedules[i].end_time %></td>
-    </tr>
-<% } %>
+<table class="table-schedules">
+    <thead class="table-heading">
+        <tr>
+            <th>ID</th>
+            <th>Day</th>
+            <th>Start time:</th>
+            <th>End time:</th>
+        </tr>
+        <% for (i=0; i < schedules.length; i++) { %>
+            <tr>
+                <td class="table-cell">
+                    <%= schedules[i].id_user %>
+                </td>
+                <td class="table-cell">
+                    <%= schedules[i].day %>
+                </td>
+                <td class="table-cell">
+                    <%= schedules[i].start_time %>
+                </td>
+                <td class="table-cell">
+                    <%= schedules[i].end_time %>
+                </td>
+            </tr>
+            <% } %>
 </table>
