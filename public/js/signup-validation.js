@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   //DOM elements
   const signupForm = document.querySelector('.form')
-  const formSubmit = document.querySelector('.sign-up-button')
+  const formSubmit = document.querySelector('.signup-button')
   const firstName = document.querySelector('#firstname')
   const lastName = document.querySelector('#lastname')
   const email = document.querySelector('#email')
@@ -54,13 +54,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (email.value === '') {
         event.preventDefault()
         eAlert.innerHTML = 'Email required.'
-        lnAlert.classList.remove('hidden')
+        eAlert.classList.remove('hidden')
       } else if (/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(email.value) !== true) {
         event.preventDefault()
         eAlert.innerHTML = 'Please use a valid email address.'
-        lnAlert.classList.remove('hidden')
+        eAlert.classList.remove('hidden')
       } else {
-        lnAlert.classList.add('hidden')
+        eAlert.classList.add('hidden')
         user.email = email.value
       }
 
