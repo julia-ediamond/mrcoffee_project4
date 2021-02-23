@@ -11,31 +11,32 @@
 <body>
     <h1>Please sign up:</h1>
     <div>
-        <form action="/index" method="POST">
+        <form class="form" action="/index" method="POST">
             <ul>
-                <li>
-                    <label for="firstname">First name</label>
-                    <input type="text" id="firstname" name="firstname">
+                <li class="form-li">
+                    <label class="form-label" for="firstname">First name</label>
+                    <input class="form-input" type="text" id="firstname" name="firstname">
                     <p class="alert hidden"></p>
                 </li>
-                <li>
-                    <label for="lastname">Last name</label>
-                    <input type="text" id="lastname" name="lastname">
-                    <p class="alert hidden"></p>
-                </li>
-
-                <li>
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email">
+                <li class="form-li">
+                    <label class="form-label" for="lastname">Last name</label>
+                    <input class="form-input" type="text" id="lastname" name="lastname">
                     <p class="alert hidden"></p>
                 </li>
 
-                <li>
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password">
+                <li class="form-li">
+                    <label class="form-label" for="email">Email</label>
+                    <input class="form-input" type="email" id="email" name="email">
                     <p class="alert hidden"></p>
                 </li>
-                <button type="submit" class="sign-up-button">Submit</button>
+
+                <li class="form-li">
+                    <label class="form-label" for="password">Password</label>
+                    <p class="description">Passwords must be at least at least 6 characters long and contain 1 uppercase letter, 1 lowercase letter, and 1 number.</p>
+                    <input class="form-input" type="password" id="password" name="password">
+                    <p class="alert hidden"></p>
+                </li>
+                <button type="submit" class="signup-button">Submit</button>
             </ul>
         </form>
     </div>
