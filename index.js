@@ -78,19 +78,19 @@ app.post('/signup', async (req, res) => {
 //get homepage
 app.get('/', (req, res) => {
     db.any('SELECT * FROM schedules;')
-    .then((schedules) => {
-        res.render('pages/index', {
-            layout: './layouts/profile-layout',
-            schedules: schedules
+        .then((schedules) => {
+            res.render('pages/index', {
+                layout: './layouts/profile-layout',
+                schedules: schedules
+            })
         })
-    })
-    .catch((err) => {
-        console.log(err)
-        // TODO: create error page
-        // res.render('pages/error', {
-        // err: err
-        // })
-    })
+        .catch((err) => {
+            console.log(err)
+            // TODO: create error page
+            // res.render('pages/error', {
+            // err: err
+            // })
+        })
 })
 
 //get schedule management page
@@ -111,7 +111,7 @@ app.get('/schedule', (req, res) => {
         // res.render('pages/error', {
         // err: err
         // })
-    })
+    })   
 })
 
 
