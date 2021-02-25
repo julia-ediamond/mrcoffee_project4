@@ -3,8 +3,8 @@ const express = require('express')
 const session = require('express-session')
 const app = express()
 const bcrypt = require('bcrypt')
-const querystring = require('querystring')
 
+const crypto = require('crypto');
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts')
 const bodyParser = require('body-parser');
@@ -22,6 +22,9 @@ app.use(bodyParser.json())
 
 // port
 const port = 3002
+app.listen(port, () => {
+    console.log(`listening on port http://localhost:${port} !`)
+})
 
 // ejs template engine
 app.set('views', './views')
@@ -29,7 +32,6 @@ app.set('view engine', 'ejs')
 
 app.use(expressLayouts)
 app.set('layout', './layouts/login-layout')
-
 
 // session setup
 const sixHours = 6 * 60 * 60 * 1000 // h * m * s * ms
@@ -52,12 +54,12 @@ app.use(session({
         maxAge: SESS_LIFETIME,
         sameSite: true,
         secure: IN_PROD
-    },
+    }
 }))
 
 // middleware for restricting page views
 const redirectLogin = (req, res, next) => {
-    if (!req.session.userId) {
+    if (!req.session.id) {
         res.redirect('/login')
     } else {
         next()
@@ -66,81 +68,39 @@ const redirectLogin = (req, res, next) => {
 
 // middleware for restricting page views
 const redirectHome = (req, res, next) => {
-    if (req.session.userId) {
+    if (req.session.id) {
         res.redirect('/')
     } else {
         next()
     }
 }
 
-
-// get route for login form
+//get route for login form
 app.get('/login', redirectHome, (req, res) => {
-    let message = req.query.message
+    res.render('pages/login')
+});
 
-    if (message === undefined) {
-        return res.render('pages/login', {
-            message: undefined
-        })
-    } else {
-        res.render('pages/login', {
-            message: message
-        })
-    }
-})
+//post route for login form
 
-// post route for login form
-app.post('/login', redirectHome, (req, res) => {
-    const email = req.body.email.toLowerCase()
-    const password = req.body.password
+app.post('/login', redirectHome,  (req, res) => {
+    // const compare = bcrypt.compare(req.body.['confirm-password'], hashedPassword)
+    const hashedPassword = bcrypt.hash(req.body.password, 10)
+    const user = {
+        email: req.body.email,
+        password: hashedPassword
+    };
+    res.redirect('/index')
+});
 
-    if (email && password) {
-        db.any('SELECT id, lower(email), password FROM users WHERE email = $1', [email])
-        .then((user) => {
-            if (user.length === 1) {
-                bcrypt.compare(password, user[0].password, function(err, result) {
-                    if (result) {
-                        req.session.userId = user[0].id
-                        return res.redirect('/')
-                    } else {
-                        return res.redirect('/login?message=Incorrect%20email%20or%20password.')
-                    }
-                })
-            } else {
-                return res.redirect('/login?message=Incorrect%20email%20or%20password.')
-            }
-        })
-        .catch((err) => {
-            return res.render('pages/error', {
-                layout: './layouts/login-layout',
-                err: err
-            })
-        })
-        
-    } else {
-        res.redirect('/login?message=Please%20insert%20both%20email%20and%20password.')
-    }
-})
-
-// get route for signup form
+//get route for signup form
 app.get('/signup', redirectHome, (req, res) => {
-    let message = req.query.message
+    res.render('pages/signup')
+});
 
-    if (message === undefined) {
-        return res.render('pages/signup', {
-            message: undefined
-        })
-    } else {
-        res.render('pages/signup', {
-            message: message
-        })
-    }
-})
+//post route for signup form
+app.post('/signup', (req, res) => {
 
-// post new user using bcrypt
-app.post('/signup', redirectHome, (req, res) => {
-
-    // validate
+    //validate
     const fnValid = /^([A-Za-zÀ-ÖØ-öø-ÿ])+( |-)?([A-Za-zÀ-ÖØ-öø-ÿ?]?)+( |-)?([A-Za-zÀ-ÖØ-öø-ÿ?]?)+$/.test(req.body.firstname)
     const lnValid = /^([A-Za-zÀ-ÖØ-öø-ÿ])+( |-)?([A-Za-zÀ-ÖØ-öø-ÿ?]?)+( |-)?([A-Za-zÀ-ÖØ-öø-ÿ?]?)+$/.test(req.body.lastname)
     const eValid = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(req.body.email)
@@ -152,60 +112,43 @@ app.post('/signup', redirectHome, (req, res) => {
     db.any('SELECT * FROM users;')
     .then((users) => {
         if (fnValid && lnValid && eValid && pValid) {
+            console.log(req.body)
+            console.log('All is valid')
             if (req.body.password === req.body['confirm-password']) {
-                const exists = users.some(user => user.email === req.body.email.toLowerCase())
-                if (!exists) {
+                console.log('Passwords are the same')
+                if (!users.find(user => user.email === req.body.email)) {
                     bcrypt.hash(req.body.password, 10, function(err, hash) {
                         newUser = {
-                            id: users.length + 1,
                             surname: req.body.lastname,
                             firstname: req.body.firstname,
-                            email: req.body.email.toLowerCase(),
+                            email: req.body.email,
                             password: hash
                         }
                         db.query('INSERT INTO users(firstname, surname, email, password) VALUES ($1, $2, $3, $4);', [newUser.firstname, newUser.surname, newUser.email, newUser.password])
                         .then (() => {
-                            return res.redirect('/login?message=Signup%20successful.')
+                            res.redirect('/')
                         })
                         .catch((err) => {
-                            return res.render('pages/error', {
-                                layout: './layouts/login-layout',
+                            res.render('pages/error', {
                                 err: err
                             })
                         })
                     })
-                } else {
-                    res.redirect('/signup?message=User%20already%20exists.')
                 }
             }
         }
     })
     .catch((err) => {
         res.render('pages/error', {
-            layout: './layouts/login-layout',
             err: err
         })
     })
 })
 
-// logout
-app.post('/logout', redirectLogin, (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            res.render('pages/error', {
-                err: err
-            })
-        } else {
-            res.clearCookie(SESS_NAME)
-            res.redirect('/login')
-        }
-    })
-})
 
-
-// get homepage
+//get homepage
 app.get('/', redirectLogin, (req, res) => {
-    db.any('SELECT users.id, firstname, surname, day, start_time, end_time FROM users INNER JOIN schedules ON users.id = schedules.id_user ORDER BY surname ASC, day ASC')
+    db.any('SELECT * FROM schedules;')
     .then((schedules) => {
         res.render('pages/index', {
             layout: './layouts/profile-layout',
@@ -219,12 +162,15 @@ app.get('/', redirectLogin, (req, res) => {
     })
 })
 
-// get schedule management page
+//get schedule management page
+// TODO: test after authentication
 app.get('/schedule', redirectLogin, (req, res) => {
-    db.any('SELECT day, start_time, end_time FROM schedules WHERE id_user = $1', [req.session.userId])
+    // db.any(`SELECT day, start_time, end_time FROM schedules WHERE ${currentUser.id} = id_user;`) - TO BE UNCOMMENTED AFTER AUTHENTICATION
+    db.any(`SELECT day, start_time, end_time FROM schedules WHERE id_user = 1;`) // For testing
     .then((schedules) => {
         res.render('pages/schedule', {
             layout: './layouts/profile-layout',
+            firstname: 'Iulia', // placeholder, replace with currentUser.firstname AFTER AUTHENTICATION
             schedules: schedules
         })
     })
@@ -241,24 +187,15 @@ app.get('/schedule', redirectLogin, (req, res) => {
 
 // get any profile
 app.get('/profile/:id(\\d+)/', redirectLogin, (req, res) => {
-    db.any('SELECT users.id, firstname, surname, email, day, start_time, end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE users.id = $1', [req.params.id])
+    db.any(`SELECT users.id, firstname, surname, email, day, start_time, end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE ${req.params.id} = users.id`)
     .then((combinedData) => {
-        if (combinedData.length > 0) {
-            res.render('pages/profile', {
-                layout: './layouts/profile-layout',
-                firstname: combinedData[0].firstname,
-                lastname: combinedData[0].surname,
-                email: combinedData[0].email,
-                schedules: combinedData
-            })
-        } else {
-            return res.render('pages/error', {
-                layout: './layouts/profile-layout',
-                err: {
-                    message: 'No such user ID.'
-                }
-            })
-        }
+        res.render('pages/profile', {
+            layout: './layouts/profile-layout',
+            firstname: combinedData[0].firstname,
+            lastname: combinedData[0].surname,
+            email: combinedData[0].email,
+            schedules: combinedData
+        })
     })
     .catch((err) => {
         res.render('pages/error', {
@@ -269,7 +206,8 @@ app.get('/profile/:id(\\d+)/', redirectLogin, (req, res) => {
 
 // get current user profile
 app.get('/profile', redirectLogin, (req, res) => {
-    db.any('SELECT users.id, firstname, surname, email, day, start_time, end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE users.id = $1', [req.session.userId])
+    // db.any(`SELECT users.id, firstname, surname, email, day, start_time, end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE ${currentUser.id} = users.id`) - UNCOMMENT AFTER AUTHENTICATION
+    db.any(`SELECT users.id, firstname, surname, email, day, start_time, end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE 1 = users.id`) // for testing
     .then((combinedData) => {
         res.render('pages/profile', {
             layout: './layouts/profile-layout',
@@ -287,13 +225,27 @@ app.get('/profile', redirectLogin, (req, res) => {
 })
   
 app.get('*', (req, res) => {
-    res.status(404).render('pages/error', {
-        err: {
-            message: 'This page does not exist'
-        }
-    })
+    res.status(404).send('This page does not exist');
 })
+  
+// for testing
+// app.get('/error', (req, res) => {
+//     const err = "Please try again";
+//     res.render('pages/error', {
+//         err: err
+//     })
+// })
 
-app.listen(port, () => {
-    console.log(`listening on port http://localhost:${port} !`)
-})
+// post new user using crypto
+// app.post('/signup', (req, res) => {
+//     const psw = req.body.password;
+//     const encryptedPassword = crypto.createHash('sha256').update(psw).digest('hex');
+//     const newUser = {
+//         firstname: req.body.firstname,
+//         lastname: req.body.lastname,
+//         email: req.body.email,
+//         password: encryptedPassword
+//     };
+//     database.users.push(newUser);
+//     res.redirect('/index');
+// })

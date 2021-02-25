@@ -3,7 +3,7 @@
 <table class="table-schedules">
     <thead class="table-heading">
         <tr>
-            <th>ID</th>
+            <th>Name</th>
             <th>Day</th>
             <th>Start time:</th>
             <th>End time:</th>
@@ -11,7 +11,7 @@
         <% for (i=0; i < schedules.length; i++) { %>
             <tr>
                 <td class="table-cell">
-                    <%= schedules[i].id_user %>
+                    <a href=<%= '/profile/' + schedules[i].id %>><%= schedules[i].firstname + ' ' + schedules[i].surname %></a>
                 </td>
                 <td class="table-cell">
                     <%= schedules[i].day %>

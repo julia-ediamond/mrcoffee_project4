@@ -6,12 +6,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const lastName = document.querySelector('#lastname')
   const email = document.querySelector('#email')
   const password = document.querySelector('#password')
+  const confirmPassword = document.querySelector('#confirm-password')
 
   // DOM elements - alerts
   const fnAlert = document.querySelector('#firstname + .alert')
   const lnAlert = document.querySelector('#lastname + .alert')
   const eAlert = document.querySelector('#email + .alert')
   const pAlert = document.querySelector('#password + .alert')
+  const cpAlert = document.querySelector('#confirm-password + .alert')
 
   // Validated user data
   let user = {}
@@ -77,7 +79,17 @@ document.addEventListener("DOMContentLoaded", () => {
       pAlert.classList.remove('hidden')
     }
     else {
-      passwordAlert.classList.add('hidden')
+      pAlert.classList.add('hidden')
+    }
+
+    // confirm matching passwords
+    if (password.value !== confirmPassword.value) {
+      event.preventDefault()
+      cpAlert.innerHTML = "Passwords don't match."
+      cpAlert.classList.remove('hidden')
+      console.log('Passwords dont match')
+    } else {
+      cpAlert.classList.add('hidden')
     }
   }
 })
