@@ -249,7 +249,7 @@ app.get('/schedule', (req, res) => {
 app.post('/schedule', (req, res) => {
 
     db.query(`INSERT INTO schedules (id_user, day, start_time, end_time) 
-    VALUES ($1, $2, TO_TIMESTAMP($3,'HH24:MI'), TO_TIMESTAMP($4,'HH24:MI'))`, [1, req.body.day, req.body.start_time, req.body.end_time])
+    VALUES ($1, $2, TO_TIMESTAMP($3,'HH24:MI'), TO_TIMESTAMP($4,'HH24:MI'))`, [req.session.userId, req.body.day, req.body.start_time, req.body.end_time])
         .then((schedules) => {
             res.redirect('schedule')
         })
