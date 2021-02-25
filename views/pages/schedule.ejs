@@ -32,31 +32,35 @@
         </form>
     </div>
     <div>
-        <table>
-            <thead class="table-heading">
-                <tr>
-                    <th>Day</th>
-                    <th>Start time:</th>
-                    <th>End time:</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% for (i=0; i < schedules.length; i++) { %>
+        <% if (schedules.length > 0) { %>
+            <table>
+                <thead class="table-heading">
                     <tr>
-                        <td class="table-cell">
-                            <%= daysOfWeek[schedules[i].day]%>
-                        </td>
-                        <td class="table-cell">
-                            <%= schedules[i].start_time%>
-                        </td>
-                        <td class="table-cell">
-                            <%= schedules[i].end_time%>
-                        </td>
-                        <!-- <td><a href="#" action="">DELETE</a></td> -->
-                        <!-- TODO: Need to look into how to delete an entry in a table from an anchor -->
+                        <th>Day</th>
+                        <th>Start time:</th>
+                        <th>End time:</th>
                     </tr>
+                </thead>
+                <tbody>
+                    <% for (i=0; i < schedules.length; i++) { %>
+                        <tr>
+                            <td class="table-cell">
+                                <%= daysOfWeek[schedules[i].day]%>
+                            </td>
+                            <td class="table-cell">
+                                <%= schedules[i].start_time%>
+                            </td>
+                            <td class="table-cell">
+                                <%= schedules[i].end_time%>
+                            </td>
+                            <!-- <td><a href="#" action="">DELETE</a></td> -->
+                            <!-- TODO: Need to look into how to delete an entry in a table from an anchor -->
+                        </tr>
                     <% } %>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        <% } else { %>
+            <p>You currently have no schedules.</p>
+        <% } %>
     </div>
 </div>

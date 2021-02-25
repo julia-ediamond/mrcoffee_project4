@@ -12,15 +12,16 @@
     <h1>Welcome to our brand new schedule website</h1>
 
     <div>
-        <form class="form" method="POST" action="/home">
+        <p class="alert"><%= message %></p>
+        <form class="form" method="POST" action="/login">
             <ul class="form-ul">
                 <li class="form-li">
                     <label class="form-label" for="email">email</label>
-                    <input class="form-input" type="email" id="email" name="email">
+                    <input class="form-input" type="email" id="email" name="email" required>
                 </li>
                 <li class="form-li">
                     <label class="form-label" for=" password">password</label>
-                    <input class="form-input" type="password" id="password" name="password">
+                    <input class="form-input" type="password" id="password" name="password" required>
                 </li>
             </ul>
 

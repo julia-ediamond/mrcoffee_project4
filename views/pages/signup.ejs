@@ -12,7 +12,8 @@
 <body>
     <h1>Please sign up:</h1>
     <div>
-        <form class="form" action="/index" method="POST">
+        <p class="alert"><%= message %></p>
+        <form class="form" action="/signup" method="POST">
             <ul class="form-ul">
                 <li class="form-li">
                     <label class="form-label" for="firstname">First name</label>
@@ -49,6 +50,9 @@
                 <button type="submit" class="button">Submit</button>
             </ul>
         </form>
+    </div>
+    <div class="signup-p">
+        <p>If you already have an account, please <a href="/login">login</a>.</p>
     </div>
 </body>
 
