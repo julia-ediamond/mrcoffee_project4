@@ -196,6 +196,7 @@ app.post('/logout', redirectLogin, (req, res) => {
     req.session.destroy(err => {
         if (err) {
             res.render('pages/error', {
+                layout: './layouts/profile-layout',
                 err: err
             })
         } else {
@@ -217,6 +218,7 @@ app.get('/', redirectLogin, (req, res) => {
         })  
         .catch((err) => {
             res.render('pages/error', {
+                layout: './layouts/profile-layout',
                 err: err
             })
         })
@@ -225,9 +227,8 @@ app.get('/', redirectLogin, (req, res) => {
 //get schedule management page
 //TO_CHAR() function converts a timestamp, an interval, an integer, a double precision, or a numeric value to a string
 //TO_CHAR(expression, format)
-// TODO: test after authentication
 app.get('/schedule', (req, res) => {
-    db.any(`SELECT day, TO_CHAR(start_time,'HH24:MI') start_time, TO_CHAR(end_time,'HH24:MI') end_time FROM schedules WHERE id_user = $1;`, [req.session.userId]) // For testing
+    db.any(`SELECT day, TO_CHAR(start_time,'HH24:MI') start_time, TO_CHAR(end_time,'HH24:MI') end_time FROM schedules WHERE id_user = $1;`, [req.session.userId])
         .then((schedules) => {
             res.render('pages/schedule', {
                 layout: './layouts/profile-layout',
@@ -237,6 +238,7 @@ app.get('/schedule', (req, res) => {
         })
         .catch((err) => {
             res.render('pages/error', {
+                layout: './layouts/profile-layout',
                 err: err
             })
         })
@@ -255,6 +257,7 @@ app.post('/schedule', (req, res) => {
         })
         .catch((err) => {
             res.render('pages/error', {
+                layout: './layouts/profile-layout',
                 err: err
             })
         })
@@ -284,6 +287,7 @@ app.get('/profile/:id(\\d+)/', redirectLogin, (req, res) => {
         })
         .catch((err) => {
             res.render('pages/error', {
+                layout: './layouts/profile-layout',
                 err: err
             })
         })
@@ -303,6 +307,7 @@ app.get('/profile', redirectLogin, (req, res) => {
         })
         .catch((err) => {
             res.render('pages/error', {
+                layout: './layouts/profile-layout',
                 err: err
             })
         })
@@ -310,6 +315,7 @@ app.get('/profile', redirectLogin, (req, res) => {
 
 app.get('*', (req, res) => {
     res.status(404).render('pages/error', {
+        layout: './layouts/login-layout',
         err: {
             message: 'This page does not exist'
         }
