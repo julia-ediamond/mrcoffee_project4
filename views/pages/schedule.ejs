@@ -1,3 +1,5 @@
+<script src="/js/schedule-validation.js"></script>
+
 <p class="shedule-p">To add a new schedule, please fill out the form below.</p>
 <div class="two-column">
     <div>
@@ -5,14 +7,14 @@
             <div>
                 <label class="form-label" for="day">Day:</label>
                 <select class="form-input" id="day" name="day" required>
-                    <option disabled selected value>Select a day</option>
-                    <option value="Monday">Monday</option>
-                    <option value="Tuesday">Tuesday</option>
-                    <option value="Wednesday">Wednesday</option>
-                    <option value="Thursday">Thursday</option>
-                    <option value="Friday">Friday</option>
-                    <option value="Saturday">Saturday</option>
-                    <option value="Sunday">Sunday</option>
+                    <option disabled>
+                        <%= daysOfWeek[0]%>
+                    </option>
+                    <% for (i=1; i < daysOfWeek.length; i++) { %>
+                        <option value="<%= i%>">
+                            <%= daysOfWeek[i]%>
+                        </option>
+                        <% } %>
                 </select>
                 <p class="alert hidden"></p>
             </div>
@@ -42,7 +44,7 @@
                 <% for (i=0; i < schedules.length; i++) { %>
                     <tr>
                         <td class="table-cell">
-                            <%= schedules[i].day%>
+                            <%= daysOfWeek[schedules[i].day]%>
                         </td>
                         <td class="table-cell">
                             <%= schedules[i].start_time%>
@@ -53,7 +55,7 @@
                         <!-- <td><a href="#" action="">DELETE</a></td> -->
                         <!-- TODO: Need to look into how to delete an entry in a table from an anchor -->
                     </tr>
-                <% } %>
+                    <% } %>
             </tbody>
         </table>
     </div>
