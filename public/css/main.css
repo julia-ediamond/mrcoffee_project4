@@ -134,3 +134,7 @@ button {
     font-weight: bold;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
+.alert {
+    color: red;
+}

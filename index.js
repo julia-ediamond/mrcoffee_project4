@@ -9,6 +9,9 @@ const path = require('path');
 const expressLayouts = require('express-ejs-layouts')
 const bodyParser = require('body-parser');
 
+//to convert days of the week from numbers to string
+const daysOfWeek = ['Select a day', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
@@ -206,44 +209,90 @@ app.post('/logout', redirectLogin, (req, res) => {
 // get homepage
 app.get('/', redirectLogin, (req, res) => {
     db.any('SELECT users.id, firstname, surname, day, start_time, end_time FROM users INNER JOIN schedules ON users.id = schedules.id_user ORDER BY surname ASC, day ASC')
-    .then((schedules) => {
-        res.render('pages/index', {
-            layout: './layouts/profile-layout',
-            schedules: schedules
+        .then((schedules) => {
+            res.render('pages/index', {
+                layout: './layouts/profile-layout',
+                schedules: schedules
+            })
+        })  
+        .catch((err) => {
+            res.render('pages/error', {
+                err: err
+            })
         })
-    })
-    .catch((err) => {
-        res.render('pages/error', {
-            err: err
-        })
-    })
 })
 
-// get schedule management page
-app.get('/schedule', redirectLogin, (req, res) => {
-    db.any('SELECT day, start_time, end_time FROM schedules WHERE id_user = $1', [req.session.userId])
-    .then((schedules) => {
-        res.render('pages/schedule', {
-            layout: './layouts/profile-layout',
-            schedules: schedules
+//get schedule management page
+//TO_CHAR() function converts a timestamp, an interval, an integer, a double precision, or a numeric value to a string
+//TO_CHAR(expression, format)
+// TODO: test after authentication
+app.get('/schedule', (req, res) => {
+    db.any(`SELECT day, TO_CHAR(start_time,'HH24:MI') start_time, TO_CHAR(end_time,'HH24:MI') end_time FROM schedules WHERE id_user = $1;`, [req.session.userId]) // For testing
+        .then((schedules) => {
+            res.render('pages/schedule', {
+                layout: './layouts/profile-layout',
+                schedules: schedules,
+                daysOfWeek: daysOfWeek
+            })
         })
-    })
-    .catch((err) => {
-        res.render('pages/error', {
-            err: err
+        .catch((err) => {
+            res.render('pages/error', {
+                err: err
+            })
         })
-    })
 })
 
 
-// post schedule
+//post schedule
+//the format we need HH24 and MI
+//TO_TIMESTAMP converts char of CHAR, VARCHAR2, NCHAR, or NVARCHAR2 datatype to a value of TIMESTAMP datatype.
+app.post('/schedule', (req, res) => {
+
+    db.query(`INSERT INTO schedules (id_user, day, start_time, end_time) 
+    VALUES ($1, $2, TO_TIMESTAMP($3,'HH24:MI'), TO_TIMESTAMP($4,'HH24:MI'))`, [1, req.body.day, req.body.start_time, req.body.end_time])
+        .then((schedules) => {
+            res.redirect('schedule')
+        })
+        .catch((err) => {
+            res.render('pages/error', {
+                err: err
+            })
+        })
+})
 
 
 // get any profile
 app.get('/profile/:id(\\d+)/', redirectLogin, (req, res) => {
     db.any('SELECT users.id, firstname, surname, email, day, start_time, end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE users.id = $1', [req.params.id])
-    .then((combinedData) => {
-        if (combinedData.length > 0) {
+        .then((combinedData) => {
+            if (combinedData.length > 0) {
+                res.render('pages/profile', {
+                    layout: './layouts/profile-layout',
+                    firstname: combinedData[0].firstname,
+                    lastname: combinedData[0].surname,
+                    email: combinedData[0].email,
+                    schedules: combinedData
+                })
+            } else {
+                return res.render('pages/error', {
+                    layout: './layouts/profile-layout',
+                    err: {
+                        message: 'No such user ID.'
+                    }
+                })
+            }
+        })
+        .catch((err) => {
+            res.render('pages/error', {
+                err: err
+            })
+        })
+})
+
+// get current user profile
+app.get('/profile', redirectLogin, (req, res) => {
+    db.any('SELECT users.id, firstname, surname, email, day, start_time, end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE users.id = $1', [req.session.userId])
+        .then((combinedData) => {
             res.render('pages/profile', {
                 layout: './layouts/profile-layout',
                 firstname: combinedData[0].firstname,
@@ -251,41 +300,14 @@ app.get('/profile/:id(\\d+)/', redirectLogin, (req, res) => {
                 email: combinedData[0].email,
                 schedules: combinedData
             })
-        } else {
-            return res.render('pages/error', {
-                layout: './layouts/profile-layout',
-                err: {
-                    message: 'No such user ID.'
-                }
-            })
-        }
-    })
-    .catch((err) => {
-        res.render('pages/error', {
-            err: err
         })
-    })
+        .catch((err) => {
+            res.render('pages/error', {
+                err: err
+            })
+        })
 })
 
-// get current user profile
-app.get('/profile', redirectLogin, (req, res) => {
-    db.any('SELECT users.id, firstname, surname, email, day, start_time, end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE users.id = $1', [req.session.userId])
-    .then((combinedData) => {
-        res.render('pages/profile', {
-            layout: './layouts/profile-layout',
-            firstname: combinedData[0].firstname,
-            lastname: combinedData[0].surname,
-            email: combinedData[0].email,
-            schedules: combinedData
-        })
-    })
-    .catch((err) => {
-        res.render('pages/error', {
-            err: err
-        })
-    })
-})
-  
 app.get('*', (req, res) => {
     res.status(404).render('pages/error', {
         err: {
