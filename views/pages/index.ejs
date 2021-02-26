@@ -14,7 +14,7 @@
                     <a href=<%= '/profile/' + schedules[i].id %>><%= schedules[i].firstname + ' ' + schedules[i].surname %></a>
                 </td>
                 <td class="table-cell">
-                    <%= schedules[i].day %>
+                    <%= daysOfWeek[schedules[i].day] %>
                 </td>
                 <td class="table-cell">
                     <%= schedules[i].start_time %>

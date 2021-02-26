@@ -103,6 +103,7 @@ app.post('/login', redirectHome, (req, res) => {
             if (user.length === 1) {
                 bcrypt.compare(password, user[0].password, function(err, result) {
                     if (result) {
+                        // create user id session data for logged in user
                         req.session.userId = user[0].id
                         return res.redirect('/')
                     } else {
@@ -118,8 +119,7 @@ app.post('/login', redirectHome, (req, res) => {
                 layout: './layouts/login-layout',
                 err: err
             })
-        })
-        
+        })      
     } else {
         res.redirect('/login?message=Please%20insert%20both%20email%20and%20password.')
     }
@@ -209,11 +209,12 @@ app.post('/logout', redirectLogin, (req, res) => {
 
 // get homepage
 app.get('/', redirectLogin, (req, res) => {
-    db.any('SELECT users.id, firstname, surname, day, start_time, end_time FROM users INNER JOIN schedules ON users.id = schedules.id_user ORDER BY surname ASC, day ASC')
+    db.any(`SELECT users.id, firstname, surname, day, TO_CHAR(start_time,'HH24:MI') start_time, TO_CHAR(end_time,'HH24:MI') end_time FROM users INNER JOIN schedules ON users.id = schedules.id_user ORDER BY surname ASC, day ASC, start_time ASC, end_time ASC`)
         .then((schedules) => {
             res.render('pages/index', {
                 layout: './layouts/profile-layout',
-                schedules: schedules
+                schedules: schedules,
+                daysOfWeek: daysOfWeek
             })
         })  
         .catch((err) => {
@@ -266,7 +267,7 @@ app.post('/schedule', (req, res) => {
 
 // get any profile
 app.get('/profile/:id(\\d+)/', redirectLogin, (req, res) => {
-    db.any('SELECT users.id, firstname, surname, email, day, start_time, end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE users.id = $1', [req.params.id])
+    db.any(`SELECT users.id, firstname, surname, email, day, TO_CHAR(start_time, 'HH24:MI') start_time, TO_CHAR(end_time, 'HH24:MI') end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE users.id = $1`, [req.params.id])
         .then((combinedData) => {
             if (combinedData.length > 0) {
                 res.render('pages/profile', {
@@ -274,7 +275,8 @@ app.get('/profile/:id(\\d+)/', redirectLogin, (req, res) => {
                     firstname: combinedData[0].firstname,
                     lastname: combinedData[0].surname,
                     email: combinedData[0].email,
-                    schedules: combinedData
+                    schedules: combinedData,
+                    daysOfWeek: daysOfWeek
                 })
             } else {
                 return res.render('pages/error', {
@@ -295,14 +297,15 @@ app.get('/profile/:id(\\d+)/', redirectLogin, (req, res) => {
 
 // get current user profile
 app.get('/profile', redirectLogin, (req, res) => {
-    db.any('SELECT users.id, firstname, surname, email, day, start_time, end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE users.id = $1', [req.session.userId])
+    db.any(`SELECT users.id, firstname, surname, email, day, TO_CHAR(start_time, 'HH24:MI') start_time, TO_CHAR(end_time, 'HH24:MI') end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE users.id = $1`, [req.session.userId])
         .then((combinedData) => {
             res.render('pages/profile', {
                 layout: './layouts/profile-layout',
                 firstname: combinedData[0].firstname,
                 lastname: combinedData[0].surname,
                 email: combinedData[0].email,
-                schedules: combinedData
+                schedules: combinedData,
+                daysOfWeek: daysOfWeek
             })
         })
         .catch((err) => {

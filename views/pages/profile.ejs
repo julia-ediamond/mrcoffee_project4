@@ -21,7 +21,7 @@
                 </tr>
                 <% for (i = 0; i < schedules.length; i++) { %>
                     <tr>
-                        <td><%= schedules[i].day %></td>
+                        <td><%= daysOfWeek[schedules[i].day] %></td>
                         <td><%= schedules[i].start_time %></td>
                         <td><%= schedules[i].end_time %></td>
                     </tr>
