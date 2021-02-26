@@ -1,37 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
+<h1>Welcome to our brand new schedule website</h1>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+<div>
+    <p class="alert"><%= message %></p>
+    <form class="form" method="POST" action="/login">
+        <ul class="form-ul">
+            <li class="form-li">
+                <label class="form-label" for="email">email</label>
+                <input class="form-input" type="email" id="email" name="email" required>
+            </li>
+            <li class="form-li">
+                <label class="form-label" for=" password">password</label>
+                <input class="form-input" type="password" id="password" name="password" required>
+            </li>
+        </ul>
 
-<body>
-    <h1>Welcome to our brand new schedule website</h1>
+        <button class="button" type="submit">Login</button>
+    </form>
+</div>
 
-    <div>
-        <p class="alert"><%= message %></p>
-        <form class="form" method="POST" action="/login">
-            <ul class="form-ul">
-                <li class="form-li">
-                    <label class="form-label" for="email">email</label>
-                    <input class="form-input" type="email" id="email" name="email" required>
-                </li>
-                <li class="form-li">
-                    <label class="form-label" for=" password">password</label>
-                    <input class="form-input" type="password" id="password" name="password" required>
-                </li>
-            </ul>
-
-            <button class="button" type="submit">Login</button>
-        </form>
-    </div>
-
-    <div class="signup-p">
-        <p>If you don't have an account yet, please <a href="/signup">sign up</a> </p>
-    </div>
-</body>
-
-</html>
+<div class="signup-p">
+    <p>If you don't have an account yet, please <a href="/signup">sign up</a> </p>
+</div>

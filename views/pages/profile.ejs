@@ -14,11 +14,14 @@
             <p><%= firstname %> currently has no schedules registered.</p>
         <% } else { %>
             <table>
-                <tr>
-                    <td>Day</td>
-                    <td>Start Time</td>
-                    <td>End Time</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                    </tr>
+                </thead>
+                <tbody>
                 <% for (i = 0; i < schedules.length; i++) { %>
                     <tr>
                         <td><%= daysOfWeek[schedules[i].day] %></td>
@@ -26,6 +29,7 @@
                         <td><%= schedules[i].end_time %></td>
                     </tr>
                 <% } %>
+                </tbody>
             </table>
         <% } %>
     </div>

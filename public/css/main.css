@@ -1,9 +1,55 @@
-.content-block {
-    width: 100%;
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+body {
     background-color: ghostwhite;
-    margin: 2em;   
-    display: flex;
-    flex-direction: column;
+    margin: 0;
+    border: 0;
+}
+
+p, li {
+    font-family: 'Lato', sans-serif;
+    font-size: 1em;
+    line-height: 1.5em;
+}
+
+h1, h2, h3 {
+   color:#5b5b5b;
+   font-family: 'Crimson Text', serif;
+   text-align: center;
+   margin: 30px 0;
+   line-height: 1.25em;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.8em;
+}
+
+h3 {
+    font-size: 1.5em;
+}
+
+a {
+    color: #c24d89;
+    text-decoration: none;
+}
+
+.content-block {
+    width: 75%;
+    max-width: 1080px;
+    background-color: ghostwhite;
+    margin: 2em;
     margin-left: auto;
     margin-right: auto;
     color:#5b5b5b; 
@@ -11,24 +57,11 @@
     line-height: 1.3em;
 }
 
-
-body {
-    background-color: ghostwhite;
-    margin: 0;
-    border: 0;
-    box-sizing: border-box;
-}
-
- h1 {
-   color:#5b5b5b;
-   text-align: center;
-}
-
 .nav-bar {
     padding: 0em;
     display: flex;
     justify-content: center;
-    background-color: #c24d89;
+    background-color: #000;
     margin-block-start: 0em;
     margin-block-end: 0em;   
 }
@@ -38,18 +71,29 @@ body {
     list-style-type: none;
     margin: 0 2vw;
     font-size: 1.3em;
-    font-family: 'Archivo', sans-serif;
     font-weight: bold;
 }
 
-.nav-button {
+.nav-li a:hover, .nav-li button:hover {
+    color: #c24d89;
+}
+
+.nav-li .not-button {
+    color: #fff;
+    text-transform: none;
+}
+
+.not-button {
     border: none;
     cursor: pointer;
-    font-family: 'Archivo', sans-serif;
     font-size: 1em;
-    font-weight: bold;
+    background-color: transparent;
     height: auto;
     width: auto;
+    margin: 0;
+    padding: 0;
+    color: #c24d89;
+    outline: none;
 }
 
 .menu {
@@ -57,9 +101,36 @@ body {
     color: ghostwhite;
 }
 
+/* TABLE STYLING */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 5em;
+}
+
+td, th {
+    margin: 3em;
+    padding: 1em;
+    text-align: center !important;
+}
+
+table .not-button {
+    margin: 0 auto;
+}
+
+thead, table > tr:first-child {
+    background-color: #c24d89;
+    color: #fff;
+}
+
+tbody tr:nth-child(even) {
+    background-color: rgb(205, 205, 205);
+}
+
+/* FORM STYLING */
+
 .form {
-    display: flex;
-    flex-direction: column;
     width: 50%;
     margin-left: auto;
     margin-right: auto;
@@ -76,56 +147,42 @@ body {
 }
 
 button {
-    width: 10em;
+    border: none;
     height: 4em;
     background-color: #c24d89;
     color: ghostwhite;
-    font-size: 1.6;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1.25em;
+    font-family: 'Lato', sans-serif;
     font-weight: bold;
     margin: 0 auto;
     display: block;
-    text-align: center;
+    padding: 10px;
+    text-transform: uppercase;
 }
 
-.form-label {
-    font-size: 1.2em;
-    margin-bottom: 2em;  
+label {
+    font-size: 1.2em; 
+    display: block; 
 }
 
-.form-input {
+input, select {
     height: 2em;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .signup-p {
-    display: flex;
     justify-content: center;
-    font-size: 1.6;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
-.table-schedules {
-    border-collapse: collapse;
-    display: flex;
-    justify-content: space-around;
-    padding: 2em;
-    margin-left: 3em;
-    margin-right: 3em;
-}
-
-.table-heading {
-    text-align: center;
-}
-
-.table-cell {
-    margin: 3em;
-    padding-left: 1em;
 }
 
 .two-column {
     display: flex;
-    justify-content: center;    
+    justify-content: center;   
+    flex-direction: row-reverse;
+}
+
+.two-column > div:first-child {
+    min-width: 400px;
 }
 
 .shedule-p {

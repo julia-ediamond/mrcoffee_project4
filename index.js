@@ -1,6 +1,7 @@
 // express setup
 const express = require('express')
 const session = require('express-session')
+const methodOverride = require('method-override')
 const app = express()
 const bcrypt = require('bcrypt')
 const querystring = require('querystring')
@@ -32,6 +33,9 @@ app.set('view engine', 'ejs')
 
 app.use(expressLayouts)
 app.set('layout', './layouts/login-layout')
+
+// override with POST having other HTTP methods
+// app.use(methodOverride('X-HTTP-Method-Override'))
 
 
 // session setup
@@ -83,10 +87,12 @@ app.get('/login', redirectHome, (req, res) => {
 
     if (message === undefined) {
         return res.render('pages/login', {
+            layout: './layouts/login-layout',
             message: undefined
         })
     } else {
         res.render('pages/login', {
+            layout: './layouts/login-layout',
             message: message
         })
     }
@@ -131,10 +137,12 @@ app.get('/signup', redirectHome, (req, res) => {
 
     if (message === undefined) {
         return res.render('pages/signup', {
+            layout: './layouts/login-layout',
             message: undefined
         })
     } else {
         res.render('pages/signup', {
+            layout: './layouts/login-layout',
             message: message
         })
     }
@@ -213,6 +221,7 @@ app.get('/', redirectLogin, (req, res) => {
         .then((schedules) => {
             res.render('pages/index', {
                 layout: './layouts/profile-layout',
+                title: 'All Schedules',
                 schedules: schedules,
                 daysOfWeek: daysOfWeek
             })
@@ -220,6 +229,7 @@ app.get('/', redirectLogin, (req, res) => {
         .catch((err) => {
             res.render('pages/error', {
                 layout: './layouts/profile-layout',
+                title: 'Error',
                 err: err
             })
         })
@@ -233,6 +243,7 @@ app.get('/schedule', redirectLogin, (req, res) => {
         .then((schedules) => {
             res.render('pages/schedule', {
                 layout: './layouts/profile-layout',
+                title: 'Schedule',
                 schedules: schedules,
                 daysOfWeek: daysOfWeek
             })
@@ -240,6 +251,7 @@ app.get('/schedule', redirectLogin, (req, res) => {
         .catch((err) => {
             res.render('pages/error', {
                 layout: './layouts/profile-layout',
+                title: 'Error',
                 err: err
             })
         })
@@ -286,6 +298,22 @@ app.post('/schedule', redirectLogin, (req, res) => {
     }
 })
 
+// TODO: delete personal schedules
+// app.delete('/schedule', redirectLogin, (req, res) => {
+//     db.query('DELETE FROM schedules WHERE id = 6', (error, results) => {
+//         if (error) {
+//             return res.render('pages/error', {
+//                 layouts: './layouts/profile-layout',
+//                 err: {
+//                     message: 'There was an error deleting your schedule.'
+//                 }
+//             })
+//         }
+//         console.log(results)
+//         res.status(200).redirect('/schedule')
+//     })
+// })
+
 
 // get any profile
 app.get('/profile/:id(\\d+)/', redirectLogin, (req, res) => {
@@ -294,6 +322,7 @@ app.get('/profile/:id(\\d+)/', redirectLogin, (req, res) => {
             if (combinedData.length > 0) {
                 res.render('pages/profile', {
                     layout: './layouts/profile-layout',
+                    title: 'Profile',
                     firstname: combinedData[0].firstname,
                     lastname: combinedData[0].surname,
                     email: combinedData[0].email,
@@ -303,6 +332,7 @@ app.get('/profile/:id(\\d+)/', redirectLogin, (req, res) => {
             } else {
                 return res.render('pages/error', {
                     layout: './layouts/profile-layout',
+                    title: 'Error',
                     err: {
                         message: 'No such user ID.'
                     }
@@ -312,6 +342,7 @@ app.get('/profile/:id(\\d+)/', redirectLogin, (req, res) => {
         .catch((err) => {
             res.render('pages/error', {
                 layout: './layouts/profile-layout',
+                title: 'Error',
                 err: err
             })
         })
@@ -323,6 +354,7 @@ app.get('/profile', redirectLogin, (req, res) => {
         .then((combinedData) => {
             res.render('pages/profile', {
                 layout: './layouts/profile-layout',
+                title: 'Profile',
                 firstname: combinedData[0].firstname,
                 lastname: combinedData[0].surname,
                 email: combinedData[0].email,
@@ -333,6 +365,7 @@ app.get('/profile', redirectLogin, (req, res) => {
         .catch((err) => {
             res.render('pages/error', {
                 layout: './layouts/profile-layout',
+                title: 'Error',
                 err: err
             })
         })
@@ -341,6 +374,7 @@ app.get('/profile', redirectLogin, (req, res) => {
 app.get('*', (req, res) => {
     res.status(404).render('pages/error', {
         layout: './layouts/login-layout',
+        title: 'Error',
         err: {
             message: 'This page does not exist'
         }

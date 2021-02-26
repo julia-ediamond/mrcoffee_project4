@@ -5,23 +5,24 @@
         <tr>
             <th>Name</th>
             <th>Day</th>
-            <th>Start time:</th>
-            <th>End time:</th>
+            <th>Start time</th>
+            <th>End time</th>
         </tr>
-        <% for (i=0; i < schedules.length; i++) { %>
-            <tr>
-                <td class="table-cell">
-                    <a href=<%= '/profile/' + schedules[i].id %>><%= schedules[i].firstname + ' ' + schedules[i].surname %></a>
-                </td>
-                <td class="table-cell">
-                    <%= daysOfWeek[schedules[i].day] %>
-                </td>
-                <td class="table-cell">
-                    <%= schedules[i].start_time %>
-                </td>
-                <td class="table-cell">
-                    <%= schedules[i].end_time %>
-                </td>
-            </tr>
-            <% } %>
+    </thead>
+    <% for (i=0; i < schedules.length; i++) { %>
+        <tr>
+            <td class="table-cell">
+                <a href=<%= '/profile/' + schedules[i].id %>><%= schedules[i].firstname + ' ' + schedules[i].surname %></a>
+            </td>
+            <td class="table-cell">
+                <%= daysOfWeek[schedules[i].day] %>
+            </td>
+            <td class="table-cell">
+                <%= schedules[i].start_time %>
+            </td>
+            <td class="table-cell">
+                <%= schedules[i].end_time %>
+            </td>
+        </tr>
+        <% } %>
 </table>

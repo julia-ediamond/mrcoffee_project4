@@ -1,4 +1,4 @@
-<p class="shedule-p">To add a new schedule, please fill out the form below.</p>
+<h1>To add a new schedule, please fill out the form below.</h1>
 <div class="two-column">
     <div>
         <form class="form" action="/schedule" method="POST">
@@ -35,8 +35,9 @@
                 <thead class="table-heading">
                     <tr>
                         <th>Day</th>
-                        <th>Start time:</th>
-                        <th>End time:</th>
+                        <th>Start time</th>
+                        <th>End time</th>
+                        <th>Delete Schedule</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,8 +52,7 @@
                             <td class="table-cell">
                                 <%= schedules[i].end_time%>
                             </td>
-                            <!-- <td><a href="#" action="">DELETE</a></td> -->
-                            <!-- TODO: Need to look into how to delete an entry in a table from an anchor -->
+                            <td><form action="/schedule?_method=DELETE" method="POST" ><button type="submit" class="not-button">DELETE</button></form></td>
                         </tr>
                         <% } %>
                 </tbody>

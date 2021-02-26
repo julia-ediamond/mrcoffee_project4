@@ -1,59 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
+<h1>Please sign up:</h1>
+<div>
+    <p class="alert"><%= message %></p>
+    <form class="form" action="/signup" method="POST">
+        <ul class="form-ul">
+            <li class="form-li">
+                <label class="form-label" for="firstname">First name</label>
+                <input class="form-input" type="text" id="firstname" name="firstname">
+                <p class="alert hidden">Not valid.</p>
+            </li>
+            <li class="form-li">
+                <label class="form-label" for="lastname">Last name</label>
+                <input class="form-input" type="text" id="lastname" name="lastname">
+                <p class="alert hidden">Not valid.</p>
+            </li>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=div, initial-scale=1.0">
-    <title>Document</title>
-    <script src="/js/signup-validation.js"></script>
-</head>
+            <li class="form-li">
+                <label class="form-label" for="email">Email</label>
+                <input class="form-input" type="email" id="email" name="email">
+                <p class="alert hidden">Not valid.</p>
+            </li>
 
-<body>
-    <h1>Please sign up:</h1>
-    <div>
-        <p class="alert"><%= message %></p>
-        <form class="form" action="/signup" method="POST">
-            <ul class="form-ul">
-                <li class="form-li">
-                    <label class="form-label" for="firstname">First name</label>
-                    <input class="form-input" type="text" id="firstname" name="firstname">
-                    <p class="alert hidden">Not valid.</p>
-                </li>
-                <li class="form-li">
-                    <label class="form-label" for="lastname">Last name</label>
-                    <input class="form-input" type="text" id="lastname" name="lastname">
-                    <p class="alert hidden">Not valid.</p>
-                </li>
+            <li class="form-li">
+                <label class="form-label" for="password">Password</label>
+                <p class="description">Passwords must be at least at least 6 characters long and contain 1 uppercase
+                    letter, 1 lowercase letter, and 1 number.</p>
+                <input class="form-input" type="password" id="password" name="password">
+                <p class="alert hidden">Not valid.</p>
 
-                <li class="form-li">
-                    <label class="form-label" for="email">Email</label>
-                    <input class="form-input" type="email" id="email" name="email">
-                    <p class="alert hidden">Not valid.</p>
-                </li>
+            </li>
 
-                <li class="form-li">
-                    <label class="form-label" for="password">Password</label>
-                    <p class="description">Passwords must be at least at least 6 characters long and contain 1 uppercase
-                        letter, 1 lowercase letter, and 1 number.</p>
-                    <input class="form-input" type="password" id="password" name="password">
-                    <p class="alert hidden">Not valid.</p>
-
-                </li>
-
-                <li class="form-li">
-                    <label class="form-label" for="confirm-password">Confirm password</label>
-                    <p class="description">Please type it again</p>
-                    <input class="form-input" type="password" id="confirm-password" name="confirm-password">
-                    <p class="alert hidden">Not valid.</p>
-                </li>
-                <button type="submit" class="button">Submit</button>
-            </ul>
-        </form>
-    </div>
-    <div class="signup-p">
-        <p>If you already have an account, please <a href="/login">login</a>.</p>
-    </div>
-</body>
-
-</html>
+            <li class="form-li">
+                <label class="form-label" for="confirm-password">Confirm password</label>
+                <p class="description">Please type it again</p>
+                <input class="form-input" type="password" id="confirm-password" name="confirm-password">
+                <p class="alert hidden">Not valid.</p>
+            </li>
+            <button type="submit" class="button">Submit</button>
+        </ul>
+    </form>
+</div>
+<div class="signup-p">
+    <p>If you already have an account, please <a href="/login">login</a>.</p>
+</div>
+<script src="/js/signup-validation.js"></script>
