@@ -2,8 +2,16 @@ const express = require('express')
 const router = express.Router()
 const db = require('../database')
 
+const redirectLogin = (req, res, next) => {
+    if (!req.session.userId) {
+        res.redirect('/login')
+    } else {
+        next()
+    }
+}
+
 // get any profile
-router.get('/:id(\\d+)/', (req, res) => {
+router.get('/:id(\\d+)/', redirectLogin, (req, res) => {
     const daysOfWeek = req.app.locals.daysOfWeek
 
     db.any(`SELECT users.id, firstname, surname, email, day, TO_CHAR(start_time, 'HH24:MI') start_time, TO_CHAR(end_time, 'HH24:MI') end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE users.id = $1`, [req.params.id])
@@ -38,9 +46,9 @@ router.get('/:id(\\d+)/', (req, res) => {
 })
 
 // get current user profile
-router.get('/', (req, res) => {
+router.get('/', redirectLogin, (req, res) => {
     const daysOfWeek = req.app.locals.daysOfWeek
-    
+
     db.any(`SELECT users.id, firstname, surname, email, day, TO_CHAR(start_time, 'HH24:MI') start_time, TO_CHAR(end_time, 'HH24:MI') end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE users.id = $1`, [req.session.userId])
         .then((combinedData) => {
             res.render('pages/profile', {

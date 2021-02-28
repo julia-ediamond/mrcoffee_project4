@@ -3,8 +3,16 @@ const router = express.Router()
 const db = require('../database')
 const bcrypt = require('bcrypt')
 
+const redirectHome = (req, res, next) => {
+    if (req.session.userId) {
+        res.redirect('/')
+    } else {
+        next()
+    }
+}
+
 // get route for login form
-router.get('/', (req, res) => {
+router.get('/', redirectHome, (req, res) => {
     let message = req.query.message
 
     if (message === undefined) {
@@ -21,7 +29,7 @@ router.get('/', (req, res) => {
 })
 
 // post route for login form
-router.post('/', (req, res) => {
+router.post('/', redirectHome, (req, res) => {
     const email = req.body.email.toLowerCase()
     const password = req.body.password
 

@@ -2,10 +2,18 @@ const express = require('express')
 const router = express.Router()
 const db = require('../database')
 
+const redirectLogin = (req, res, next) => {
+    if (!req.session.userId) {
+        res.redirect('/login')
+    } else {
+        next()
+    }
+}
+
 //get schedule management page
 //TO_CHAR() function converts a timestamp, an interval, an integer, a double precision, or a numeric value to a string
 //TO_CHAR(expression, format)
-router.get('/', (req, res) => {
+router.get('/', redirectLogin, (req, res) => {
     const daysOfWeek = req.app.locals.daysOfWeek
 
     db.any(`SELECT day, TO_CHAR(start_time,'HH24:MI') start_time, TO_CHAR(end_time,'HH24:MI') end_time FROM schedules WHERE id_user = $1;`, [req.session.userId])
@@ -30,11 +38,10 @@ router.get('/', (req, res) => {
 //post schedule
 //the format we need HH24 and MI
 //TO_TIMESTAMP converts char of CHAR, VARCHAR2, NCHAR, or NVARCHAR2 datatype to a value of TIMESTAMP datatype.
-router.post('/', (req, res) => {
+router.post('/', redirectLogin, (req, res) => {
     const daysOfWeek = req.app.locals.daysOfWeek
 
     let dayValid = daysOfWeek.slice(1).includes(daysOfWeek[req.body.day])
-    console.log(daysOfWeek.slice(1))
     let startValid = /^(([0-1][0-9])|(2[0-3])):[0-5][0-9]$/.test(req.body.start_time)
     let endValid = /^(([0-1][0-9])|(2[0-3])):[0-5][0-9]$/.test(req.body.end_time)
 

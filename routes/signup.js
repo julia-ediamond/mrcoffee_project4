@@ -3,9 +3,16 @@ const router = express.Router()
 const db = require('../database')
 const bcrypt = require('bcrypt')
 
+const redirectHome = (req, res, next) => {
+    if (req.session.userId) {
+        res.redirect('/')
+    } else {
+        next()
+    }
+}
 
 // get route for signup form
-router.get('/', (req, res) => {
+router.get('/', redirectHome, (req, res) => {
     let message = req.query.message
 
     if (message === undefined) {
@@ -22,7 +29,7 @@ router.get('/', (req, res) => {
 })
 
 // post new user using bcrypt
-router.post('/', (req, res) => {
+router.post('/', redirectHome, (req, res) => {
 
     // validate
     const fnValid = /^([A-Za-zÀ-ÖØ-öø-ÿ])+( |-)?([A-Za-zÀ-ÖØ-öø-ÿ?]?)+( |-)?([A-Za-zÀ-ÖØ-öø-ÿ?]?)+$/.test(req.body.firstname)
