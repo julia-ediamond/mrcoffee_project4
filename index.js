@@ -29,7 +29,7 @@ app.set('views', './views')
 app.set('view engine', 'ejs')
 
 app.use(expressLayouts)
-app.set('layout', './layouts/login-layout') //just to check, should the second value here be "./layouts/login-layout" or just "./layouts"?
+app.set('layout', './layouts/login-layout')
 
 // override with POST having other HTTP methods
 // app.use(methodOverride('X-HTTP-Method-Override'))
