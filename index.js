@@ -81,6 +81,22 @@ const redirectHome = (req, res, next) => {
 app.locals.daysOfWeek = ['Select a day', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 // this will persist throughout the app and can be called in router files via req.app.locals.daysOfWeek
 
+// logout
+app.get('/logout', redirectLogin, (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            res.render('pages/error', {
+                layout: 'layouts/profile-layout',
+                title: 'Error',
+                err: err
+            })
+        } else {
+            res.clearCookie(SESS_NAME)
+            res.redirect('/login')
+        }
+    })
+})
+
 
 // routes
 const loginRouter = require('./routes/login')
@@ -98,20 +114,7 @@ app.use('/schedule', scheduleRouter)
 app.use('*', errorRouter)
 
 
-// logout
-app.post('/logout', redirectLogin, (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            res.render('pages/error', {
-                layout: 'layouts/profile-layout',
-                err: err
-            })
-        } else {
-            res.clearCookie(SESS_NAME)
-            res.redirect('/login')
-        }
-    })
-})
+
 
 
 app.listen(port, () => {

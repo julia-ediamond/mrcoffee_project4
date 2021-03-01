@@ -15,14 +15,16 @@ const redirectLogin = (req, res, next) => {
 //TO_CHAR(expression, format)
 router.get('/', redirectLogin, (req, res) => {
     const daysOfWeek = req.app.locals.daysOfWeek
+    let message = req.query.message
 
-    db.any(`SELECT day, TO_CHAR(start_time,'HH24:MI') start_time, TO_CHAR(end_time,'HH24:MI') end_time FROM schedules WHERE id_user = $1;`, [req.session.userId])
+    db.any(`SELECT id, day, TO_CHAR(start_time,'HH24:MI') start_time, TO_CHAR(end_time,'HH24:MI') end_time FROM schedules WHERE id_user = $1 ORDER BY day ASC, start_time ASC, end_time ASC`, [req.session.userId])
         .then((schedules) => {
             res.render('pages/schedule', {
                 layout: './layouts/profile-layout',
                 title: 'Schedule',
                 schedules: schedules,
-                daysOfWeek: daysOfWeek
+                daysOfWeek: daysOfWeek,
+                message: message
             })
         })
         .catch((err) => {
@@ -50,17 +52,19 @@ router.post('/', redirectLogin, (req, res) => {
             db.query(`INSERT INTO schedules (id_user, day, start_time, end_time) 
             VALUES ($1, $2, TO_TIMESTAMP($3,'HH24:MI'), TO_TIMESTAMP($4,'HH24:MI'))`, [req.session.userId, req.body.day, req.body.start_time, req.body.end_time])
                 .then((schedules) => {
-                    return res.redirect('schedule')
+                    return res.redirect('/schedule?message=New%20schedule%20created.')
                 })
                 .catch((err) => {
                     return res.render('pages/error', {
                         layout: './layouts/profile-layout',
+                        title: 'Error',
                         err: err
                     })
                 })
         } else {
             res.render('pages/error', {
                 layout: './layouts/profile-layout',
+                title: 'Error',
                 err: {
                     message: 'End time must be later than the start time.'
                 }
@@ -69,6 +73,7 @@ router.post('/', redirectLogin, (req, res) => {
     } else {
         res.render('pages/error', {
             layout: './layouts/profile-layout',
+            title: 'Error',
             err: {
                 message: 'Inputs were not valid, please try again.'
             }
@@ -77,19 +82,29 @@ router.post('/', redirectLogin, (req, res) => {
 })
 
 // TODO: delete personal schedules
-// app.delete('/schedule', redirectLogin, (req, res) => {
-//     db.query('DELETE FROM schedules WHERE id = 6', (error, results) => {
-//         if (error) {
-//             return res.render('pages/error', {
-//                 layouts: './layouts/profile-layout',
-//                 err: {
-//                     message: 'There was an error deleting your schedule.'
-//                 }
-//             })
-//         }
-//         console.log(results)
-//         res.status(200).redirect('/schedule')
-//     })
-// })
+router.post('/delete', redirectLogin, (req, res) => {
+
+    if (req.query.scheduleid) {
+        db.query(`DELETE FROM schedules WHERE id = $1 AND id_user = $2`, [req.query.scheduleid, req.session.userId])
+        .then(() => {
+            res.redirect('/schedule?message=Schedule%20deleted.')
+        })
+        .catch((err) => {
+            res.render('pages/error', {
+                layout: './layouts/profile-layout',
+                title: 'Error',
+                err: err
+            })
+        })
+    } else {
+        res.render('pages/error', {
+            layouts: './layouts/profile-layout',
+            title: 'Error',
+            err: {
+                message: 'There is no schedule ID associated with your delete request.'
+            }
+        })
+    }
+})
 
 module.exports = router
