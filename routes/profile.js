@@ -14,7 +14,7 @@ const redirectLogin = (req, res, next) => {
 router.get('/:id(\\d+)/', redirectLogin, (req, res) => {
     const daysOfWeek = req.app.locals.daysOfWeek
 
-    db.any(`SELECT users.id, firstname, surname, email, day, TO_CHAR(start_time, 'HH24:MI') start_time, TO_CHAR(end_time, 'HH24:MI') end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE users.id = $1`, [req.params.id])
+    db.any(`SELECT users.id, firstname, surname, email, day, TO_CHAR(start_time, 'HH24:MI') start_time, TO_CHAR(end_time, 'HH24:MI') end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE users.id = $1 ORDER BY day ASC, start_time ASC, end_time ASC`, [req.params.id])
         .then((combinedData) => {
             if (combinedData.length > 0) {
                 res.render('pages/profile', {
@@ -49,7 +49,7 @@ router.get('/:id(\\d+)/', redirectLogin, (req, res) => {
 router.get('/', redirectLogin, (req, res) => {
     const daysOfWeek = req.app.locals.daysOfWeek
 
-    db.any(`SELECT users.id, firstname, surname, email, day, TO_CHAR(start_time, 'HH24:MI') start_time, TO_CHAR(end_time, 'HH24:MI') end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE users.id = $1`, [req.session.userId])
+    db.any(`SELECT users.id, firstname, surname, email, day, TO_CHAR(start_time, 'HH24:MI') start_time, TO_CHAR(end_time, 'HH24:MI') end_time FROM users LEFT JOIN schedules ON users.id = schedules.id_user WHERE users.id = $1 ORDER BY day ASC, start_time ASC, end_time ASC`, [req.session.userId])
         .then((combinedData) => {
             res.render('pages/profile', {
                 layout: './layouts/profile-layout',

@@ -27,6 +27,7 @@
                 <p class="alert hidden"></p>
             </div>
             <button class="button" type="submit">Add Schedule</button>
+            <p class="alert"><%= message %></p>
         </form>
     </div>
     <div>
@@ -52,7 +53,7 @@
                             <td class="table-cell">
                                 <%= schedules[i].end_time%>
                             </td>
-                            <td><form action="/schedule?_method=DELETE" method="POST" ><button type="submit" class="not-button">DELETE</button></form></td>
+                            <td><form method="post" action="/schedule/delete?scheduleid=<%= schedules[i].id %>"><button class="not-button">DELETE</button></form></td>
                         </tr>
                         <% } %>
                 </tbody>
