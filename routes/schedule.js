@@ -37,7 +37,7 @@ router.get('/', redirectLogin, (req, res) => {
 })
 
 
-//post schedule
+// post schedule
 //the format we need HH24 and MI
 //TO_TIMESTAMP converts char of CHAR, VARCHAR2, NCHAR, or NVARCHAR2 datatype to a value of TIMESTAMP datatype.
 router.post('/', redirectLogin, (req, res) => {
@@ -46,42 +46,64 @@ router.post('/', redirectLogin, (req, res) => {
     let dayValid = daysOfWeek.slice(1).includes(daysOfWeek[req.body.day])
     let startValid = /^(([0-1][0-9])|(2[0-3])):[0-5][0-9]$/.test(req.body.start_time)
     let endValid = /^(([0-1][0-9])|(2[0-3])):[0-5][0-9]$/.test(req.body.end_time)
+    let overlap = false
 
+    
+    // check if all three fields are formatted correctly
     if (dayValid && startValid && endValid) {
+
+        // check if the end time is later than the start time
         if (Number(req.body.end_time.replace(':', '')) > Number(req.body.start_time.replace(':', ''))) {
-            db.query(`INSERT INTO schedules (id_user, day, start_time, end_time) 
-            VALUES ($1, $2, TO_TIMESTAMP($3,'HH24:MI'), TO_TIMESTAMP($4,'HH24:MI'))`, [req.session.userId, req.body.day, req.body.start_time, req.body.end_time])
-                .then((schedules) => {
-                    return res.redirect('/schedule?message=New%20schedule%20created.')
-                })
-                .catch((err) => {
-                    return res.render('pages/error', {
-                        layout: './layouts/profile-layout',
-                        title: 'Error',
-                        err: err
-                    })
-                })
-        } else {
-            res.render('pages/error', {
-                layout: './layouts/profile-layout',
-                title: 'Error',
-                err: {
-                    message: 'End time must be later than the start time.'
+
+            // check database for overlapping times
+            db.any(`SELECT id_user, day, TO_CHAR(start_time, 'HH24:MI') start_time, TO_CHAR(end_time, 'HH24:MI') end_time FROM schedules WHERE id_user = $1 AND day = $2`, [req.session.userId, req.body.day])
+            .then((schedules) => {
+                for (i = 0; i < schedules.length; i++) {
+                    if (
+                        ((req.body.start_time >= schedules[i].start_time) && (req.body.start_time < schedules[i].end_time)) ||
+                        ((req.body.end_time <= schedules[i].end_time) && (req.body.end_time > schedules[i].start_time)) ||
+                        ((req.body.start_time < schedules[i].start_time) && (req.body.end_time > schedules[i].end_time))
+                    ) {
+                        return overlap = true
+                    }
                 }
             })
+            .then(() => {
+                if (overlap === false) {
+
+                    // insert into database
+                    db.query(`INSERT INTO schedules (id_user, day, start_time, end_time) 
+                    VALUES ($1, $2, TO_TIMESTAMP($3,'HH24:MI'), TO_TIMESTAMP($4,'HH24:MI'))`, [req.session.userId, req.body.day, req.body.start_time, req.body.end_time])
+                    .then((schedules) => {
+                        return res.redirect('/schedule?message=New%20schedule%20created.')
+                    })
+                    .catch((err) => {
+                        return res.render('pages/error', {
+                            layout: './layouts/profile-layout',
+                            title: 'Error',
+                            err: err
+                        })
+                    })
+                } else {
+                    res.redirect('/schedule?message=You%20have%20an%20existing%20schedule%20at%20that%20time.')
+                }
+            })
+            .catch((err) => {
+                res.render('pages/error', {
+                    layout: './layouts/profile-layout',
+                    title: 'Error',
+                    err: err
+                })
+            })      
+        } else {
+            res.redirect('/schedule?message=End%20time%20must%20be%20later%20than%20the%20start%20time.')
         }
     } else {
-        res.render('pages/error', {
-            layout: './layouts/profile-layout',
-            title: 'Error',
-            err: {
-                message: 'Inputs were not valid, please try again.'
-            }
-        })
+        res.redirect('/schedule?message=Inputs%20were%20not%20valid,%20please%20try%20again.')
     }
 })
 
-// TODO: delete personal schedules
+// delete personal schedules
 router.post('/delete', redirectLogin, (req, res) => {
 
     if (req.query.scheduleid) {
