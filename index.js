@@ -1,11 +1,9 @@
-// express setup
+// dependencies
 const express = require('express')
-const session = require('express-session')
-// const methodOverride = require('method-override')
 const app = express()
+const session = require('express-session')
 const bcrypt = require('bcrypt')
 const querystring = require('querystring')
-
 const path = require('path')
 const expressLayouts = require('express-ejs-layouts')
 const bodyParser = require('body-parser')
@@ -30,10 +28,6 @@ app.set('view engine', 'ejs')
 
 app.use(expressLayouts)
 app.set('layout', './layouts/login-layout')
-
-// override with POST having other HTTP methods
-// app.use(methodOverride('X-HTTP-Method-Override'))
-
 
 // session setup
 const sixHours = 6 * 60 * 60 * 1000 // h * m * s * ms
@@ -68,18 +62,9 @@ const redirectLogin = (req, res, next) => {
     }
 }
 
-// middleware for restricting page views
-const redirectHome = (req, res, next) => {
-    if (req.session.userId) {
-        res.redirect('/')
-    } else {
-        next()
-    }
-}
-
-//to convert days of the week from numbers to string
+// to convert days of the week from numbers to string
 app.locals.daysOfWeek = ['Select a day', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-// this will persist throughout the app and can be called in router files via req.app.locals.daysOfWeek
+
 
 // logout
 app.get('/logout', redirectLogin, (req, res) => {
@@ -112,9 +97,6 @@ app.use('/', homeRouter)
 app.use('/profile', profileRouter)
 app.use('/schedule', scheduleRouter)
 app.use('*', errorRouter)
-
-
-
 
 
 app.listen(port, () => {

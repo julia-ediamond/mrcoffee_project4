@@ -1,3 +1,5 @@
+/* GLOBAL STYLING */
+
 html {
     box-sizing: border-box;
 }
@@ -69,6 +71,42 @@ a:hover {
     line-height: 1.3em;
 }
 
+.not-button {
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    background-color: transparent;
+    height: auto;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    color: #c24d89;
+}
+
+.not-button:hover {
+    border: none;
+    color: #000;
+}
+
+.shedule-p {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.alert {
+    color: #c24d89;
+    margin-bottom: 10px;
+    font-size: .75em;
+}
+
+.alert.hidden {
+    display: block!important;
+    visibility: hidden;
+}
+
+/* NAV BAR */
+
 .nav-bar {
     padding: 0em;
     display: flex;
@@ -93,23 +131,6 @@ a:hover {
 .nav-li .not-button {
     color: #fff;
     text-transform: none;
-}
-
-.not-button {
-    border: none;
-    cursor: pointer;
-    font-size: 1em;
-    background-color: transparent;
-    height: auto;
-    width: auto;
-    margin: 0;
-    padding: 0;
-    color: #c24d89;
-}
-
-.not-button:hover {
-    border: none;
-    color: #000;
 }
 
 .menu {
@@ -191,7 +212,6 @@ label {
 }
 
 input, select {
-    /* line-height: 2em; */
     width: 100%;
     margin: 0.5em;
     margin-left: 0;
@@ -209,6 +229,8 @@ input, select {
     text-align: center;
 }
 
+/* FLEX LAYOUTS */
+
 @media only screen and (min-width: 870px) {
     .two-column {
         display: flex;
@@ -219,21 +241,4 @@ input, select {
 
 .two-column > div:first-child {
     min-width: 400px;
-}
-
-.shedule-p {
-    text-align: center;
-    font-size: 1.5em;
-    font-weight: bold;
-}
-
-.alert {
-    color: #c24d89;
-    margin-bottom: 10px;
-    font-size: .75em;
-}
-
-.alert.hidden {
-    display: block!important;
-    visibility: hidden;
 }
