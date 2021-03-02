@@ -4,6 +4,23 @@
 
 A pretend scheduling app for fictitous Paris cafe Mr. Coffee. This 2-person project was created for learning purposes through the INCO Academy bootcamp, INCODE.
 
+## Contributors
+
+<div style="display:flex; margin-bottom: 20px;">
+<div>
+<a href="https://github.com/cattrn" target="_blank"><img src="https://github.com/cattrn.png" style="width:100px; border-radius:50%; display:block;">
+Caterina Turnbull</a>
+</div>
+
+<div style="margin-left:30px;">
+<a href="https://github.com/julia-ediamond" target="_blank"><img src="https://github.com/julia-ediamond.png" style="width:100px; border-radius:50%; display:block;">
+Iulia Sharnina</a>
+</div>
+</div>
+
+
+
+
 ## Installation
 
 Download or clone the repo and run the following in the same folder.
