@@ -2,6 +2,7 @@
 <div class="two-column">
     <div>
         <form class="form" action="/schedule" method="POST">
+            <p class="alert center"><%= message %></p>
             <div>
                 <label class="form-label" for="day">Day:</label>
                 <select class="form-input" id="day" name="day" required>
@@ -14,20 +15,19 @@
                         </option>
                         <% } %>
                 </select>
-                <p class="alert hidden"></p>
+                <p class="alert hidden">Not valid.</p>
             </div>
             <div>
                 <label class="form-label" for="start_time">Start Time:</label>
                 <input class="form-input" id="start_time" type="text" name="start_time" placeholder="HH:MM" required>
-                <p class="alert hidden"></p>
+                <p class="alert hidden">Not valid.</p>
             </div>
             <div>
                 <label class="form-label" for="end_time">End Time:</label>
                 <input class="form-input" id="end_time" type="text" name="end_time" placeholder="HH:MM" required>
-                <p class="alert hidden"></p>
+                <p class="alert hidden">Not valid.</p>
             </div>
-            <button class="button" type="submit">Add Schedule</button>
-            <p class="alert"><%= message %></p>
+            <button class="button full-width" type="submit">Add Schedule</button>
         </form>
     </div>
     <div>
