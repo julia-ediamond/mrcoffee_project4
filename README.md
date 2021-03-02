@@ -6,17 +6,21 @@ A pretend scheduling app for fictitous Paris cafe Mr. Coffee. This 2-person proj
 
 ## Contributors
 
-<div style="display:flex; margin-bottom: 20px;">
-<div>
-<a href="https://github.com/cattrn" target="_blank"><img src="https://github.com/cattrn.png" style="width:100px; border-radius:50%; display:block;">
-Caterina Turnbull</a>
+<a href="https://github.com/cattrn">
+<div class="CircleBadge CircleBadge--medium bg-gray-dark">
+  <img src="https://github.com/cattrn.png" alt="Cat Turnbull" class="CircleBadge-icon" />
 </div>
+</a>
 
-<div style="margin-left:30px;">
-<a href="https://github.com/julia-ediamond" target="_blank"><img src="https://github.com/julia-ediamond.png" style="width:100px; border-radius:50%; display:block;">
-Iulia Sharnina</a>
+<a href="https://github.com/julia-ediamond">
+<div class="CircleBadge CircleBadge--medium bg-gray-dark">
+  <img src="https://github.com/julia-ediamond.png" alt="Cat Turnbull" class="CircleBadge-icon" />
 </div>
-</div>
+</a>
+
+<!-- [![julia-ediamond github profile](https://avatars.githubusercontent.com/u/78720261?s=100&v=4)](https://github.com/julia-ediamond)
+
+[![cattrn github profile](https://github.com/cattrn.png?size=100)](https://github.com/cattrn) -->
 
 
 
