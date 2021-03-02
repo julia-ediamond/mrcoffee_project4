@@ -10,9 +10,7 @@ const redirectLogin = (req, res, next) => {
     }
 }
 
-//get schedule management page
-//TO_CHAR() function converts a timestamp, an interval, an integer, a double precision, or a numeric value to a string
-//TO_CHAR(expression, format)
+// get schedule management page
 router.get('/', redirectLogin, (req, res) => {
     const daysOfWeek = req.app.locals.daysOfWeek
     let message = req.query.message
@@ -38,8 +36,6 @@ router.get('/', redirectLogin, (req, res) => {
 
 
 // post schedule
-//the format we need HH24 and MI
-//TO_TIMESTAMP converts char of CHAR, VARCHAR2, NCHAR, or NVARCHAR2 datatype to a value of TIMESTAMP datatype.
 router.post('/', redirectLogin, (req, res) => {
     const daysOfWeek = req.app.locals.daysOfWeek
 
@@ -72,7 +68,7 @@ router.post('/', redirectLogin, (req, res) => {
                 if (overlap === false) {
 
                     // insert into database
-                    db.query(`INSERT INTO schedules (id_user, day, start_time, end_time) 
+                    db.none(`INSERT INTO schedules (id_user, day, start_time, end_time) 
                     VALUES ($1, $2, TO_TIMESTAMP($3,'HH24:MI'), TO_TIMESTAMP($4,'HH24:MI'))`, [req.session.userId, req.body.day, req.body.start_time, req.body.end_time])
                     .then((schedules) => {
                         return res.redirect('/schedule?message=New%20schedule%20created.')
@@ -107,7 +103,7 @@ router.post('/', redirectLogin, (req, res) => {
 router.post('/delete', redirectLogin, (req, res) => {
 
     if (req.query.scheduleid) {
-        db.query(`DELETE FROM schedules WHERE id = $1 AND id_user = $2`, [req.query.scheduleid, req.session.userId])
+        db.none(`DELETE FROM schedules WHERE id = $1 AND id_user = $2`, [req.query.scheduleid, req.session.userId])
         .then(() => {
             res.redirect('/schedule?message=Schedule%20deleted.')
         })
