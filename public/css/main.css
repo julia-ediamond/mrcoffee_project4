@@ -14,7 +14,7 @@ body {
     border: 0;
 }
 
-p, li {
+p, li, td, th {
     font-family: 'Lato', sans-serif;
     font-size: 1em;
     line-height: 1.5em;
@@ -43,6 +43,18 @@ h3 {
 a {
     color: #c24d89;
     text-decoration: none;
+}
+
+a:hover {
+    color: #000;
+}
+
+.center {
+    text-align: center;
+}
+
+.full-width {
+    width: 100%;
 }
 
 .content-block {
@@ -93,7 +105,11 @@ a {
     margin: 0;
     padding: 0;
     color: #c24d89;
-    outline: none;
+}
+
+.not-button:hover {
+    border: none;
+    color: #000;
 }
 
 .menu {
@@ -136,49 +152,69 @@ tbody tr:nth-child(even) {
     margin-right: auto;
 }
 
-.form-ul{
-    padding-inline-start: 0em;
-    margin: 0em;
-}
-.form-li {
-    list-style-type: none;
-    width: 90%;
-    margin: 0.5em;
-}
-
 button {
-    border: none;
-    height: 4em;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #c24d89;
+    cursor: pointer;
+    /* height: 4em; */
     background-color: #c24d89;
+    border-radius: 15px;
     color: ghostwhite;
-    font-size: 1.25em;
+    letter-spacing: 1px;
+    font-size: 1em;
     font-family: 'Lato', sans-serif;
     font-weight: bold;
-    margin: 0 auto;
+    /* box-shadow: rgba(0,0,0,0.5) 3px 3px 5px; */
+    margin: 10px auto;
     display: block;
-    padding: 10px;
+    padding: 10px 15px;
     text-transform: uppercase;
+}
+
+button:hover {
+    /* box-shadow: none;
+    position:relative;
+    top: 3px;
+    left: 3px; */
+    border-color: #c24d89;
+    border-style: solid;
+    background-color: transparent;
+    color: #c24d89;
 }
 
 label {
     font-size: 1.2em; 
-    display: block; 
+    display: block;
+    font-weight: 700;
+    font-family: 'Lato', sans-serif;
 }
 
 input, select {
-    height: 2em;
+    /* line-height: 2em; */
     width: 100%;
-    box-sizing: border-box;
+    margin: 0.5em;
+    margin-left: 0;
+    padding: 10px;
+    border-radius: 15px;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.description {
+    font-size: .75em;
 }
 
 .signup-p {
-    justify-content: center;
+    text-align: center;
 }
 
-.two-column {
-    display: flex;
-    justify-content: center;   
-    flex-direction: row-reverse;
+@media only screen and (min-width: 870px) {
+    .two-column {
+        display: flex;
+        justify-content: center;   
+        flex-direction: row-reverse;
+    }
 }
 
 .two-column > div:first-child {
@@ -189,9 +225,15 @@ input, select {
     text-align: center;
     font-size: 1.5em;
     font-weight: bold;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .alert {
-    color: red;
+    color: #c24d89;
+    margin-bottom: 10px;
+    font-size: .75em;
+}
+
+.alert.hidden {
+    display: block!important;
+    visibility: hidden;
 }

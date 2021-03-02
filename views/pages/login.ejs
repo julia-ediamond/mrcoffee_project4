@@ -3,17 +3,14 @@
 <div>
     <p class="alert"><%= message %></p>
     <form class="form" method="POST" action="/login">
-        <ul class="form-ul">
-            <li class="form-li">
-                <label class="form-label" for="email">email</label>
-                <input class="form-input" type="email" id="email" name="email" required>
-            </li>
-            <li class="form-li">
-                <label class="form-label" for=" password">password</label>
-                <input class="form-input" type="password" id="password" name="password" required>
-            </li>
-        </ul>
-
+        <div>
+            <label class="form-label" for="email">Email</label>
+            <input class="form-input" type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label class="form-label" for=" password">Password</label>
+            <input class="form-input" type="password" id="password" name="password" required>
+        </div>
         <button class="button" type="submit">Login</button>
     </form>
 </div>
